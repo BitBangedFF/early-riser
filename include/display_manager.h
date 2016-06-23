@@ -14,6 +14,17 @@
 
 
 //
+typedef struct
+{
+    //
+    //
+    int test;
+} display_s;
+
+
+
+
+//
 void dm_test( void );
 
 

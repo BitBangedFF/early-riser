@@ -56,28 +56,50 @@
 //
 void dm_test( void )
 {
-    int win_width = 0;
-    int win_height = 0;
+    int screen_width = 0;
+    int screen_height = 0;
+
+    const unsigned int win_width = 600;
+    const unsigned int win_height = 400;
 
 
     //
-    init( &win_width, &win_height );
+    initWindowSize( 200, 200, win_width, win_height );
+
+    //
+    init( &screen_width, &screen_height );
 
     //
     Start( win_width, win_height );
 
     //
-    Background( 0x00, 0x00, 0xFF );
+    Background( 70, 70, 70 );
 
     //
-    Fill( 0x00, 0xFF, 0x00, 0.5f );
+    Stroke( 255, 0, 0, 1.0f );
 
     //
-    Circle( win_width / 2, 0, win_width );
+    StrokeWidth( 2.0f );
+
+    //
+    RoundrectOutline( 2.0f, 2.0f, (VGfloat) win_width - 2.0f, (VGfloat) win_height - 2.0f, 2.0f, 2.0f );
+
+    //
+    Stroke( 0, 0, 0, 1.0f );
+
+    //
+    StrokeWidth( 1.0f );
+
+    //
+    Fill( 0, 255, 0, 1.0f );
+
+    //
+    Circle( win_width / 2.0f, 0.0f, win_width );
 
     //
     End();
 
+    //
     (void) sleep( 3 );
 
     //
