@@ -12,13 +12,12 @@
 #include <string.h>
 #include <unistd.h>
 
-//
 #include <VG/openvg.h>
 #include <VG/vgu.h>
 #include <fontinfo.h>
 #include <shapes.h>
 
-//
+#include "gui.h"
 #include "display_manager.h"
 
 
@@ -52,28 +51,17 @@
 //
 static void render_display( display_s * const display )
 {
-
+    // TODO
 
     // set background color
     Background( 0, 0, 0 );
 
-    //
-    Fill( 28, 0, 223, 1.0f );
-
-    //
-    Text( 30.0f, 300.0f, "05:58", SerifTypeface, 150.0f );
-
-    TextMid( (VGfloat) display->win_width / 2.0f, 420.0f, "PM", SerifTypeface, 20.0f );
-
-    TextMid( (VGfloat) display->win_width / 2.0f, 250.0f, "Thursday - 23 June 2016", SerifTypeface, 30.0f );
-
-    Text( 20.0f, 175.0f, "Alarm", SerifTypeface, 15.0f );
-
-    Text( 25.0f, 150.0f, "+ Friday 05:05 AM", SerifTypeface, 15.0f );
+    // TODO
 
     // render to buffer/screen
     End();
 
+    // update render counter after rendering
     display->render_cnt += 1;
 }
 
@@ -120,14 +108,16 @@ void dm_release( display_s * const display )
 {
     if( display != NULL )
     {
-        //
+        // release OpenVG
         finish();
     }
 }
 
 
 //
-void dm_update( display_s * const display )
+void dm_render_gui(
+        display_s * const display,
+        gui_s * const gui )
 {
     if( display != NULL )
     {

@@ -29,7 +29,7 @@ typedef struct
     unsigned int win_height;
     //
     //
-    unsigned long render_cnt;
+    unsigned long long render_cnt;
 } display_s;
 
 
@@ -49,7 +49,9 @@ void dm_release( display_s * const display );
 
 
 //
-void dm_update( display_s * const display );
+void dm_render_gui(
+        display_s * const display,
+        gui_s * const gui );
 
 
 

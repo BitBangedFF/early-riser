@@ -14,6 +14,12 @@
 
 
 //
+typedef unsigned long long timestamp_ms;
+
+
+
+
+//
 typedef struct
 {
     //

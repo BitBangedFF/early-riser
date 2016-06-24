@@ -8,6 +8,7 @@ TARGET := bin/early-riser
 
 # sources
 SRCS := src/display_manager.c \
+	src/time_domain.c \
 	src/main.c
 
 # object files, dep files
@@ -31,7 +32,7 @@ CCFLAGS += -Wextra \
 LDFLAGS =
 
 #
-LIBS = -L/opt/vc/lib -lEGL -lGLESv2 -lbcm_host -lpthread -ljpeg -lshapes -lm
+LIBS = -L/opt/vc/lib -lEGL -lGLESv2 -lbcm_host -lpthread -ljpeg -lshapes -lrt -lm
 
 #
 INCLUDE = -Iinclude \

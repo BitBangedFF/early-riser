@@ -13,8 +13,8 @@
 #include <unistd.h>
 #include <signal.h>
 
-//
 #include "gui.h"
+#include "time_domain.h"
 #include "display_manager.h"
 
 
@@ -68,9 +68,11 @@ static void sig_handler( int sig )
 int main( int argc, char **argv )
 {
     display_s display;
+    gui_s gui;
 
     global_exit_signal = 0;
     memset( &display, 0, sizeof(display) );
+    memset( &gui, 0, sizeof(gui) );
 
     // hook up the control-c signal handler, sets exit signaled flag
     signal( SIGINT, sig_handler );
@@ -90,7 +92,7 @@ int main( int argc, char **argv )
     while( global_exit_signal == 0 )
     {
         //
-        dm_update( &display );
+        dm_render_gui( &display, &gui );
     }
 
     //
