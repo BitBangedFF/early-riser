@@ -18,14 +18,17 @@ typedef struct
 {
     //
     //
-    int test;
+    unsigned int win_width;
+    //
+    //
+    unsigned int win_height;
 } display_s;
 
 
 
 
 //
-void dm_test( void );
+void dm_test( display_s * const display );
 
 
 

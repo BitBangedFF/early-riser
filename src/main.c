@@ -53,8 +53,13 @@
 //
 int main( int argc, char **argv )
 {
+    display_s display;
+
+
+    memset( &display, 0, sizeof(display) );
+
     //
-    dm_test();
+    dm_test( &display );
 
 
     return 0;
