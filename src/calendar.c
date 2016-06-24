@@ -82,12 +82,19 @@ void calendar_render(
     // format digits
     if( local_date != NULL )
     {
-        snprintf(
+        char * const ascii_date = asctime( local_date );
+
+        strncpy(
                 calendar->date_string,
-                sizeof(calendar->date_string),
-                "Thursday - %02d:%02d",
-                local_date->tm_min,
-                local_date->tm_sec );
+                ascii_date,
+                sizeof(calendar->date_string) );
+
+        // remove '\n' character if one exist
+        char * const nl = strchr( calendar->date_string, (int) '\n' );
+        if( nl != NULL )
+        {
+            (*nl) = '\0';
+        }
     }
 
     // select font
