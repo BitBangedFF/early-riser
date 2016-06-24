@@ -46,6 +46,24 @@
 // static definitions
 // *****************************************************
 
+//
+static timestamp_ms get_timestamp( clockid_t clk_id )
+{
+    struct timespec time;
+    timestamp_ms timestamp;
+
+    // get time
+    clock_gettime( clk_id, &time );
+
+    // convert to milliseconds
+    timestamp = (timestamp_ms) SEC_TO_MILLI( (timestamp_ms) time.tv_sec );
+
+    // convert nanosecond remainder to milliseconds
+    timestamp += (timestamp_ms) NANO_TO_MILLI( (timestamp_ms) time.tv_nsec );
+
+    return timestamp;
+}
+
 
 
 
@@ -86,19 +104,14 @@ void time_sleep_ms( const timestamp_ms interval )
 //
 timestamp_ms time_get_timestamp( void )
 {
-    struct timespec time;
-    timestamp_ms timestamp;
+    return get_timestamp( CLOCK_REALTIME );
+}
 
-    // get time
-    clock_gettime( CLOCK_REALTIME, &time );
 
-    // convert to milliseconds
-    timestamp = (timestamp_ms) SEC_2_MILLI( (timestamp_ms) time.tv_sec );
-
-    // convert nanosecond remainder to milliseconds
-    timestamp += (timestamp_ms) NANO_2_MILLI( (timestamp_ms) time.tv_nsec );
-
-    return timestamp;
+//
+timestamp_ms time_get_monotonic_timestamp( void )
+{
+    return get_timestamp( CLOCK_MONOTONIC );
 }
 
 
@@ -131,4 +144,14 @@ timestamp_ms time_get_until( const timestamp_ms const value )
     }
 
     return delta;
+}
+
+
+//
+struct tm *time_get_localtime( const timestamp_ms const timestamp )
+{
+    // convert milliseconds to seconds
+    const time_t time_sec = (time_t) MILLI_TO_SEC( timestamp );
+
+    return localtime( &time_sec );
 }

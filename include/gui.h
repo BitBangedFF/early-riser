@@ -13,8 +13,27 @@
 
 
 
+#include <stdbool.h>
+
+
+
+
 //
 typedef unsigned long long timestamp_ms;
+
+
+
+
+//
+typedef enum
+{
+    //
+    //
+    TEXT_FONT_SARIF_TYPE_FACE = 0,
+    //
+    //
+    TEXT_FONT_SARIF_TYPE_KIND_COUNT
+} gui_text_font_kind;
 
 
 
@@ -24,7 +43,31 @@ typedef struct
 {
     //
     //
-    int tmp;
+    timestamp_ms utc_time;
+    //
+    //
+    char time_string[32];
+    //
+    //
+    gui_text_font_kind font;
+    //
+    //
+    unsigned int font_point_size;
+    //
+    //
+    unsigned int digit_color_rgb[3];
+    //
+    //
+    float digit_color_alpha;
+} gui_clock_s;
+
+
+//
+typedef struct
+{
+    //
+    //
+    gui_clock_s clock;
 } gui_s;
 
 
