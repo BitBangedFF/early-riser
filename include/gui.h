@@ -43,9 +43,6 @@ typedef struct
 {
     //
     //
-    timestamp_ms utc_time;
-    //
-    //
     char time_string[32];
     //
     //
@@ -67,7 +64,55 @@ typedef struct
 {
     //
     //
+    char date_string[32];
+    //
+    //
+    gui_text_font_kind font;
+    //
+    //
+    unsigned int font_point_size;
+    //
+    //
+    unsigned int digit_color_rgb[3];
+    //
+    //
+    float digit_color_alpha;
+} gui_calendar_s;
+
+
+//
+typedef struct
+{
+    //
+    //
+    unsigned int win_width;
+    //
+    //
+    unsigned int win_height;
+    //
+    //
+    unsigned long long render_cnt;
+} gui_display_s;
+
+
+//
+typedef struct
+{
+    //
+    //
+    timestamp_ms utc_clock_time;
+    //
+    //
+    gui_display_s display;
+    //
+    //
     gui_clock_s clock;
+    //
+    //
+    gui_calendar_s calendar;
+    //
+    //
+    unsigned int background_color_rgb[3];
 } gui_s;
 
 

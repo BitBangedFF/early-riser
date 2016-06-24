@@ -15,6 +15,8 @@
 
 #include "gui.h"
 #include "time_domain.h"
+#include "clock.h"
+#include "calendar.h"
 #include "display_manager.h"
 
 
@@ -67,11 +69,9 @@ static void sig_handler( int sig )
 //
 int main( int argc, char **argv )
 {
-    display_s display;
     gui_s *gui = NULL;
 
     global_exit_signal = 0;
-    memset( &display, 0, sizeof(display) );
 
     // hook up the control-c signal handler, sets exit signaled flag
     signal( SIGINT, sig_handler );
@@ -95,29 +95,34 @@ int main( int argc, char **argv )
                 0,
                 640,
                 480,
-                &display );
+                &gui->display );
+
+        // default background color
+        gui->background_color_rgb[0] = 0;
+        gui->background_color_rgb[1] = 0;
+        gui->background_color_rgb[2] = 0;
 
         // default clock configuration
-        gui->clock.font = TEXT_FONT_SARIF_TYPE_FACE;
-        gui->clock.font_point_size = 165;
-        gui->clock.digit_color_rgb[0] = 28;
-        gui->clock.digit_color_rgb[1] = 0;
-        gui->clock.digit_color_rgb[2] = 223;
-        gui->clock.digit_color_alpha = 1.0f;
+        clock_set_default_configuration( &gui->clock );
+
+        // default calendar configuration
+        calendar_set_default_configuration( &gui->calendar );
     }
 
     // main loop
     while( global_exit_signal == 0 )
     {
-        //
-        dm_render_gui( &display, gui );
-    }
+        // update current clock time
+        gui->utc_clock_time = time_get_timestamp();
 
-    //
-    dm_release( &display );
+        //
+        dm_update_gui( gui );
+    }
 
     if( gui != NULL )
     {
+        dm_release( &gui->display );
+
         free( gui );
         gui = NULL;
     }

@@ -19,39 +19,24 @@
 
 
 //
-typedef struct
-{
-    //
-    //
-    unsigned int win_width;
-    //
-    //
-    unsigned int win_height;
-    //
-    //
-    unsigned long long render_cnt;
-} display_s;
-
-
-
-
-//
 void dm_init(
         const unsigned long x,
         const unsigned long y,
         const unsigned long width,
         const unsigned long height,
-        display_s * const display );
+        gui_display_s * const display );
 
 
 //
-void dm_release( display_s * const display );
+void dm_release( gui_display_s * const display );
 
 
 //
-void dm_render_gui(
-        display_s * const display,
-        gui_s * const gui );
+void *dm_get_font( const gui_text_font_kind font_kind );
+
+
+//
+void dm_update_gui( gui_s * const gui );
 
 
 
