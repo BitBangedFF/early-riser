@@ -13,6 +13,11 @@
 
 
 
+#include "gui.h"
+
+
+
+
 //
 typedef struct
 {
@@ -22,13 +27,29 @@ typedef struct
     //
     //
     unsigned int win_height;
+    //
+    //
+    unsigned long render_cnt;
 } display_s;
 
 
 
 
 //
-void dm_test( display_s * const display );
+void dm_init(
+        const unsigned long x,
+        const unsigned long y,
+        const unsigned long width,
+        const unsigned long height,
+        display_s * const display );
+
+
+//
+void dm_release( display_s * const display );
+
+
+//
+void dm_update( display_s * const display );
 
 
 
