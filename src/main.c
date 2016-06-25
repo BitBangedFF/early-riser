@@ -88,7 +88,7 @@ int main( int argc, char **argv )
         global_exit_signal = 1;
     }
 
-    // 800x400 or 640x480 ?
+    //
     if( gui != NULL )
     {
         dm_init(
@@ -108,6 +108,15 @@ int main( int argc, char **argv )
 
         // default calendar configuration
         calendar_set_default_configuration( &gui->calendar );
+
+#warning "TESTING alarm"
+        alarm_add( "test alarm 1", time_get_timestamp() + 5000, &gui->alarms );
+
+        alarm_add( "test alarm 2", time_get_timestamp() + 10000, &gui->alarms );
+
+        alarm_add( "test alarm 3", time_get_timestamp() + 11000, &gui->alarms );
+
+        alarm_add( "test alarm 4", time_get_timestamp() + 13000, &gui->alarms );
     }
 
     // main loop
@@ -123,6 +132,8 @@ int main( int argc, char **argv )
     if( gui != NULL )
     {
         dm_release( &gui->display );
+
+        alarm_release( &gui->alarms );
 
         free( gui );
         gui = NULL;

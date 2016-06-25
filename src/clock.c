@@ -62,12 +62,20 @@
 void clock_set_default_configuration( gui_clock_s * const clock )
 {
     // default clock configuration
-    clock->font = TEXT_FONT_SARIF_TYPE_FACE;
-    clock->font_point_size = 165;
-    clock->digit_color_rgb[0] = 28;
-    clock->digit_color_rgb[1] = 0;
-    clock->digit_color_rgb[2] = 223;
-    clock->digit_color_alpha = 1.0f;
+    if( clock != NULL )
+    {
+        clock->font = TEXT_FONT_SARIF_TYPE_FACE;
+        clock->font_point_size = 165;
+        clock->digit_color_rgb[0] = 28;
+        clock->digit_color_rgb[1] = 0;
+        clock->digit_color_rgb[2] = 223;
+        clock->digit_color_alpha = 1.0f;
+
+        // get text height
+        clock->font_height = (float) TextHeight(
+                *((Fontinfo*) font_get( clock->font )),
+                (int) clock->font_point_size );
+    }
 }
 
 
@@ -107,9 +115,6 @@ void clock_render(
     // select font
     Fontinfo * const font = (Fontinfo*) font_get( clock->font );
 
-    // get text height
-    const VGfloat text_height = TextHeight( *font, (int) clock->font_point_size );
-
     // stroke width
     StrokeWidth( 0.0f );
 
@@ -126,7 +131,7 @@ void clock_render(
     // render hour/minute text
     TextMid(
             ((VGfloat) gui->display.win_width) / 2.0f,
-            ((VGfloat) gui->display.win_height) - (text_height / 1.3f),
+            ((VGfloat) gui->display.win_height) - (clock->font_height / 1.3f),
             clock->time_string,
             *font,
             (int) clock->font_point_size );

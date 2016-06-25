@@ -19,13 +19,25 @@
 
 
 //
-//void calendar_set_default_configuration( gui_calendar_s * const calendar );
+void alarm_set_default_configuration( gui_alarm_s * const alarm );
+
+
 //
+void alarm_release( gui_alarm_sequence_s * const alarms );
+
+
 //
-////
-//void calendar_render(
-//        gui_s * const gui,
-//        gui_calendar_s * const calendar );
+void alarm_add(
+        const char * const name,
+        const timestamp_ms utc_time,
+        gui_alarm_sequence_s * const alarms );
+
+
+//
+void alarm_render(
+        gui_s * const gui,
+        gui_alarm_sequence_s * const alarms );
+
 
 
 

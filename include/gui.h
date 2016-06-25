@@ -18,6 +18,18 @@
 
 
 
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+
+
+
 //
 typedef unsigned long long timestamp_ms;
 
@@ -49,6 +61,9 @@ typedef struct
     gui_text_font_kind font;
     //
     //
+    float font_height;
+    //
+    //
     unsigned int font_point_size;
     //
     //
@@ -68,6 +83,9 @@ typedef struct
     //
     //
     gui_text_font_kind font;
+    //
+    //
+    float font_height;
     //
     //
     unsigned int font_point_size;
@@ -91,7 +109,25 @@ typedef struct
     timestamp_ms utc_time;
     //
     //
-    char date_string[256];
+    bool enabled;
+    //
+    //
+    char display_string[1024];
+    //
+    //
+    gui_text_font_kind font;
+    //
+    //
+    float font_height;
+    //
+    //
+    unsigned int font_point_size;
+    //
+    //
+    unsigned int digit_color_rgb[3];
+    //
+    //
+    float digit_color_alpha;
 } gui_alarm_s;
 
 

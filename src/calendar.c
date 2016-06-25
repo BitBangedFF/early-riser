@@ -62,12 +62,20 @@
 void calendar_set_default_configuration( gui_calendar_s * const calendar )
 {
     // default calendar configuration
-    calendar->font = TEXT_FONT_SARIF_TYPE_FACE;
-    calendar->font_point_size = 30;
-    calendar->digit_color_rgb[0] = 28;
-    calendar->digit_color_rgb[1] = 0;
-    calendar->digit_color_rgb[2] = 223;
-    calendar->digit_color_alpha = 1.0f;
+    if( calendar != NULL )
+    {
+        calendar->font = TEXT_FONT_SARIF_TYPE_FACE;
+        calendar->font_point_size = 30;
+        calendar->digit_color_rgb[0] = 28;
+        calendar->digit_color_rgb[1] = 0;
+        calendar->digit_color_rgb[2] = 223;
+        calendar->digit_color_alpha = 0.8f;
+
+        // get text height
+        calendar->font_height = (float) TextHeight(
+                *((Fontinfo*) font_get( calendar->font )),
+                (int) calendar->font_point_size );
+    }
 }
 
 
@@ -100,14 +108,6 @@ void calendar_render(
     // select font
     Fontinfo * const font = (Fontinfo*) font_get( calendar->font );
 
-    // get text height
-    const VGfloat text_height = TextHeight( *font, (int) calendar->font_point_size );
-
-    // get text height of clock
-    const VGfloat clock_text_height = TextHeight(
-            *((Fontinfo*) font_get( gui->clock.font )),
-            (int) gui->clock.font_point_size );
-
     // stroke width
     StrokeWidth( 0.0f );
 
@@ -124,7 +124,7 @@ void calendar_render(
     // render date text
     TextMid(
             ((VGfloat) gui->display.win_width) / 2.0f,
-            ((VGfloat) gui->display.win_height) - (clock_text_height / 1.25f) - text_height,
+            ((VGfloat) gui->display.win_height) - (gui->clock.font_height / 1.25f) - calendar->font_height,
             calendar->date_string,
             *font,
             (int) calendar->font_point_size );

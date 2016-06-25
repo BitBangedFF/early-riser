@@ -74,6 +74,9 @@ static void render_display( gui_s * const gui )
     // render the calendar
     calendar_render( gui, &gui->calendar );
 
+    // render the alarms
+    alarm_render( gui, &gui->alarms );
+
     // render to buffer/screen
     End();
 
