@@ -37,6 +37,23 @@
 // static global data
 // *****************************************************
 
+//
+static const char *DAY_OF_WEEK_TABLE[] =
+{
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thur",
+    "Fri",
+    "Sat",
+    NULL
+};
+
+
+//
+static const char MONDAY_THROUGH_FRIDAY[] = "Mon-Fri";
+
 
 
 
@@ -84,19 +101,74 @@ static void render(
     // format digits
     if( local_date != NULL )
     {
-        char * const ascii_date = asctime( local_date );
+        // convert 24 hour clock with 12 (AM/PM is implied)
+        int am_pm_hour = local_date->tm_hour;
+        bool is_pm = false;
 
+        // 12:00 AM
+        if( am_pm_hour == 0 )
+        {
+            am_pm_hour = 12;
+        }
+        else if( am_pm_hour > 12 )
+        {
+            // 1:00 PM
+            am_pm_hour -= 12;
+        }
+
+        if( local_date->tm_hour >= 12 )
+        {
+            is_pm = TRUE;
+        }
+
+        snprintf(
+                alarm->time_string,
+                sizeof(alarm->time_string),
+                "%02d:%02d %s",
+                am_pm_hour,
+                local_date->tm_min,
+                (is_pm == TRUE) ? "PM" : "AM" );
+
+        // add alarm name
         strncpy(
                 alarm->display_string,
-                ascii_date,
+                alarm->name,
                 sizeof(alarm->display_string) );
 
-        // remove '\n' character if one exist
-        char * const nl = strchr( alarm->display_string, (int) '\n' );
-        if( nl != NULL )
+        // add ' - ' token
+        strncat(
+                alarm->display_string,
+                " - ",
+                sizeof(alarm->display_string) );
+
+        // add day of the week
+        if( alarm->is_monday_through_friday == TRUE )
         {
-            (*nl) = '\0';
+            // mon-fri
+            strncat(
+                    alarm->display_string,
+                    MONDAY_THROUGH_FRIDAY,
+                    sizeof(alarm->display_string) );
         }
+        else
+        {
+            strncat(
+                    alarm->display_string,
+                    DAY_OF_WEEK_TABLE[ local_date->tm_wday ],
+                    sizeof(alarm->display_string) );
+        }
+
+        // add ' ' token
+        strncat(
+                alarm->display_string,
+                " ",
+                sizeof(alarm->display_string) );
+
+        // add time in 12 hour (am/pm) format
+        strncat(
+                alarm->display_string,
+                alarm->time_string,
+                sizeof(alarm->display_string) );
     }
 
     // select font
@@ -138,11 +210,12 @@ void alarm_set_default_configuration( gui_alarm_s * const alarm )
     if( alarm != NULL )
     {
         alarm->font = TEXT_FONT_SARIF_TYPE_FACE;
-        alarm->font_point_size = 15;
+        alarm->font_point_size = 20;
         alarm->digit_color_rgb[0] = 100;
         alarm->digit_color_rgb[1] = 100;
         alarm->digit_color_rgb[2] = 100;
         alarm->digit_color_alpha = 0.5f;
+        alarm->is_monday_through_friday = FALSE;
         alarm->enabled = FALSE;
 
         // get text height
@@ -173,6 +246,7 @@ void alarm_release( gui_alarm_sequence_s * const alarms )
 void alarm_add(
         const char * const name,
         const timestamp_ms utc_time,
+        const bool is_mon_through_fri,
         gui_alarm_sequence_s * const alarms )
 {
     resize_sequence( alarms, alarms->length + 1 );
@@ -185,7 +259,13 @@ void alarm_add(
 
     alarm->utc_time = utc_time;
 
-    alarm->enabled = TRUE;
+    alarm->is_monday_through_friday = is_mon_through_fri;
+
+    // enable if time hasn't already past
+    if( time_get_timestamp() < utc_time )
+    {
+        alarm->enabled = TRUE;
+    }
 }
 
 
@@ -197,7 +277,7 @@ void alarm_render(
     unsigned long idx = 0;
     float dy = 0.0f;
 
-    const float base_y = ((float) gui->display.win_height) - (gui->clock.font_height / 1.25f) - gui->calendar.font_height - 50.0f;
+    const float base_y = ((float) gui->display.win_height) - (gui->clock.font_height / 1.25f) - gui->calendar.font_height - 60.0f;
 
     for( idx = 0; idx < alarms->length; idx += 1 )
     {

@@ -30,6 +30,7 @@ void alarm_release( gui_alarm_sequence_s * const alarms );
 void alarm_add(
         const char * const name,
         const timestamp_ms utc_time,
+        const bool is_mon_through_fri,
         gui_alarm_sequence_s * const alarms );
 
 

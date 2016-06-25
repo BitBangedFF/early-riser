@@ -109,10 +109,16 @@ typedef struct
     timestamp_ms utc_time;
     //
     //
+    bool is_monday_through_friday;
+    //
+    //
     bool enabled;
     //
     //
     char display_string[1024];
+    //
+    //
+    char time_string[256];
     //
     //
     gui_text_font_kind font;

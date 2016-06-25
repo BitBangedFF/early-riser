@@ -110,13 +110,29 @@ int main( int argc, char **argv )
         calendar_set_default_configuration( &gui->calendar );
 
 #warning "TESTING alarm"
-        alarm_add( "test alarm 1", time_get_timestamp() + 5000, &gui->alarms );
+        alarm_add(
+                "test alarm 1",
+                time_get_timestamp() + 50000,
+                TRUE,
+                &gui->alarms );
 
-        alarm_add( "test alarm 2", time_get_timestamp() + 10000, &gui->alarms );
+        alarm_add(
+                "test alarm 2",
+                time_get_timestamp() + 100000,
+                FALSE,
+                &gui->alarms );
 
-        alarm_add( "test alarm 3", time_get_timestamp() + 11000, &gui->alarms );
+        alarm_add(
+                "test alarm 3",
+                time_get_timestamp() + 250000,
+                FALSE,
+                &gui->alarms );
 
-        alarm_add( "test alarm 4", time_get_timestamp() + 13000, &gui->alarms );
+        alarm_add(
+                "test alarm 4",
+                time_get_timestamp() + 500000,
+                FALSE,
+                &gui->alarms );
     }
 
     // main loop
