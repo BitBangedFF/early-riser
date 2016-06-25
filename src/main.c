@@ -17,6 +17,7 @@
 #include "time_domain.h"
 #include "clock.h"
 #include "calendar.h"
+#include "alarm.h"
 #include "display_manager.h"
 
 

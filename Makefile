@@ -8,9 +8,11 @@ TARGET := bin/early-riser
 
 # sources
 SRCS := src/display_manager.c \
+	src/time_domain.c \
+	src/font.c \
 	src/calendar.c \
 	src/clock.c \
-	src/time_domain.c \
+	src/alarm.c \
 	src/main.c
 
 # object files, dep files

@@ -32,10 +32,6 @@ void dm_release( gui_display_s * const display );
 
 
 //
-void *dm_get_font( const gui_text_font_kind font_kind );
-
-
-//
 void dm_update_gui( gui_s * const gui );
 
 

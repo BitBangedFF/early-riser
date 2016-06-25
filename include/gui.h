@@ -64,7 +64,7 @@ typedef struct
 {
     //
     //
-    char date_string[32];
+    char date_string[256];
     //
     //
     gui_text_font_kind font;
@@ -78,6 +78,36 @@ typedef struct
     //
     float digit_color_alpha;
 } gui_calendar_s;
+
+
+//
+typedef struct
+{
+    //
+    //
+    char name[256];
+    //
+    //
+    timestamp_ms utc_time;
+    //
+    //
+    char date_string[256];
+} gui_alarm_s;
+
+
+//
+typedef struct
+{
+    //
+    //
+    unsigned long length;
+    //
+    //
+    unsigned long maximum;
+    //
+    //
+    gui_alarm_s *buffer;
+} gui_alarm_sequence_s;
 
 
 //
@@ -110,6 +140,9 @@ typedef struct
     //
     //
     gui_calendar_s calendar;
+    //
+    //
+    gui_alarm_sequence_s alarms;
     //
     //
     unsigned int background_color_rgb[3];

@@ -19,8 +19,10 @@
 
 #include "gui.h"
 #include "time_domain.h"
+#include "font.h"
 #include "clock.h"
 #include "calendar.h"
+#include "alarm.h"
 #include "display_manager.h"
 
 
@@ -52,24 +54,6 @@
 // *****************************************************
 
 //
-static Fontinfo *get_font( const gui_text_font_kind font_kind )
-{
-    Fontinfo *font = NULL;
-
-    if( font_kind == TEXT_FONT_SARIF_TYPE_FACE )
-    {
-        font = &SerifTypeface;
-    }
-    else
-    {
-        font = &SerifTypeface;
-    }
-
-    return font;
-}
-
-
-//
 static void render_display( gui_s * const gui )
 {
     // set background color
@@ -80,9 +64,9 @@ static void render_display( gui_s * const gui )
 
 #warning "TESTING - red outline of window space"
     // red outline of window space
-    Stroke( 255, 0, 0, 1.0f );
-    StrokeWidth( 1.0f );
-    RectOutline( 5.0f, 5.0f, (VGfloat) gui->display.win_width - 5.0f, (VGfloat) gui->display.win_height - 5.0f );
+//    Stroke( 255, 0, 0, 1.0f );
+//    StrokeWidth( 1.0f );
+//    RectOutline( 5.0f, 5.0f, (VGfloat) gui->display.win_width - 5.0f, (VGfloat) gui->display.win_height - 5.0f );
 
     // render the digital clock
     clock_render( gui, &gui->clock );
@@ -143,13 +127,6 @@ void dm_release( gui_display_s * const display )
         // release OpenVG
         finish();
     }
-}
-
-
-//
-void *dm_get_font( const gui_text_font_kind font_kind )
-{
-    return (void*) get_font( font_kind );
 }
 
 

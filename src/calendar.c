@@ -20,7 +20,7 @@
 
 #include "gui.h"
 #include "time_domain.h"
-#include "display_manager.h"
+#include "font.h"
 #include "calendar.h"
 
 
@@ -98,14 +98,14 @@ void calendar_render(
     }
 
     // select font
-    Fontinfo * const font = (Fontinfo*) dm_get_font( calendar->font );
+    Fontinfo * const font = (Fontinfo*) font_get( calendar->font );
 
     // get text height
     const VGfloat text_height = TextHeight( *font, (int) calendar->font_point_size );
 
     // get text height of clock
     const VGfloat clock_text_height = TextHeight(
-            *((Fontinfo*) dm_get_font( gui->clock.font )),
+            *((Fontinfo*) font_get( gui->clock.font )),
             (int) gui->clock.font_point_size );
 
     // stroke width
@@ -124,7 +124,7 @@ void calendar_render(
     // render date text
     TextMid(
             ((VGfloat) gui->display.win_width) / 2.0f,
-            ((VGfloat) gui->display.win_height) - (clock_text_height / 1.3f) - text_height,
+            ((VGfloat) gui->display.win_height) - (clock_text_height / 1.25f) - text_height,
             calendar->date_string,
             *font,
             (int) calendar->font_point_size );

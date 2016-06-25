@@ -20,7 +20,7 @@
 
 #include "gui.h"
 #include "time_domain.h"
-#include "display_manager.h"
+#include "font.h"
 #include "clock.h"
 
 
@@ -105,7 +105,7 @@ void clock_render(
     }
 
     // select font
-    Fontinfo * const font = (Fontinfo*) dm_get_font( clock->font );
+    Fontinfo * const font = (Fontinfo*) font_get( clock->font );
 
     // get text height
     const VGfloat text_height = TextHeight( *font, (int) clock->font_point_size );
