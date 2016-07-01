@@ -81,7 +81,7 @@ void calendar_set_default_configuration( gui_calendar_s * const calendar )
 
 //
 void calendar_render(
-        gui_s * const gui,
+        const gui_s * const gui,
         gui_calendar_s * const calendar )
 {
     // get local time date

@@ -126,6 +126,13 @@ int main( int argc, char **argv )
                 8,
                 22,
                 &gui->alarms );
+
+        alarm_add(
+                "test alarm 3",
+                DAY_SATURDAY_AND_SUNDAY,
+                5,
+                00,
+                &gui->alarms );
     }
 
     // main loop
