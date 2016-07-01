@@ -12,6 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <math.h>
 
 #include <VG/openvg.h>
 #include <VG/vgu.h>
@@ -67,6 +68,18 @@ static const char *WEEK_DAY_TABLE[] =
 // *****************************************************
 
 //
+static float get_rolling_alpha( const timestamp_ms start_time )
+{
+    float alpha = 1.0f;
+    const timestamp_ms delta = time_get_since( start_time );
+
+    alpha = fabs( cos( ((float) delta / 1000.0f) ) );
+
+    return alpha;
+}
+
+
+//
 static void resize_sequence(
         gui_alarm_sequence_s * const seq,
         const unsigned long length )
@@ -84,6 +97,48 @@ static void resize_sequence(
     }
 
     seq->length = length;
+}
+
+
+//
+static void update_alarm(
+        const gui_s * const gui,
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute,
+        gui_alarm_s * const alarm )
+{
+    if( alarm->enabled == FALSE )
+    {
+        bool check_date = FALSE;
+        if( alarm->week_day == DAY_MONDAY_THROUGH_FRIDAY )
+        {
+            if( time_is_day_mon_through_fri(week_day) == TRUE )
+            {
+                check_date = TRUE;
+            }
+        }
+        else if( alarm->week_day == DAY_SATURDAY_AND_SUNDAY )
+        {
+            if( time_is_day_sat_through_sun(week_day) == TRUE )
+            {
+                check_date = TRUE;
+            }
+        }
+        else if( week_day == alarm->week_day )
+        {
+            check_date = TRUE;
+        }
+
+        if( check_date == TRUE )
+        {
+            if( (hour >= alarm->hour) && (minute >= alarm->minute) )
+            {
+                alarm->enabled = TRUE;
+                alarm->enabled_timestamp = time_get_timestamp();
+            }
+        }
+    }
 }
 
 
@@ -150,11 +205,22 @@ static void render(
     Stroke( 0, 0, 0, 1.0f );
 
     // text color
-    Fill(
-            config->digit_color_rgb[0],
-            config->digit_color_rgb[1],
-            config->digit_color_rgb[2],
-            config->digit_color_alpha );
+    if( alarm->enabled == TRUE )
+    {
+        Fill(
+                (unsigned int) config->enabled_digit_color[0],
+                (unsigned int) config->enabled_digit_color[1],
+                (unsigned int) config->enabled_digit_color[2],
+                get_rolling_alpha(alarm->enabled_timestamp) );
+    }
+    else
+    {
+        Fill(
+                (unsigned int) config->digit_color[0],
+                (unsigned int) config->digit_color[1],
+                (unsigned int) config->digit_color[2],
+                config->digit_color[3] );
+    }
 
     // render text
     Text(
@@ -180,10 +246,15 @@ void alarm_set_default_configuration( gui_alarm_config_s * const config )
     {
         config->font = TEXT_FONT_SARIF_TYPE_FACE;
         config->font_point_size = 20;
-        config->digit_color_rgb[0] = 100;
-        config->digit_color_rgb[1] = 100;
-        config->digit_color_rgb[2] = 100;
-        config->digit_color_alpha = 0.5f;
+        config->digit_color[0] = 100.0f;
+        config->digit_color[1] = 100.0f;
+        config->digit_color[2] = 100.0f;
+        config->digit_color[3] = 0.5f;
+
+        config->enabled_digit_color[0] = 255.0f;
+        config->enabled_digit_color[1] = 0.0f;
+        config->enabled_digit_color[2] = 0.0f;
+        config->enabled_digit_color[3] = 1.0f;
 
         // get text height
         config->font_height = (float) TextHeight(
@@ -254,5 +325,24 @@ void alarm_render(
         render( gui, &alarms->config, alarm, ypos );
 
         dy += 2.0f * alarms->config.font_height;
+    }
+}
+
+
+//
+void alarm_update(
+        gui_s * const gui,
+        gui_alarm_sequence_s * const alarms )
+{
+    unsigned long idx = 0;
+    const unsigned long week_day = time_get_week_day();
+    const unsigned long hour = time_get_hour();
+    const unsigned long minute = time_get_minute();
+
+    for( idx = 0; idx < alarms->length; idx += 1 )
+    {
+        gui_alarm_s * const alarm = &alarms->buffer[ idx ];
+
+        update_alarm( gui, week_day, hour, minute, alarm );
     }
 }

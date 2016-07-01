@@ -62,12 +62,6 @@ static void render_display( gui_s * const gui )
             gui->background_color_rgb[1],
             gui->background_color_rgb[2] );
 
-#warning "TESTING - red outline of window space"
-    // red outline of window space
-//    Stroke( 255, 0, 0, 1.0f );
-//    StrokeWidth( 1.0f );
-//    RectOutline( 5.0f, 5.0f, (VGfloat) gui->display.win_width - 5.0f, (VGfloat) gui->display.win_height - 5.0f );
-
     // render the digital clock
     clock_render( gui, &gui->clock );
 
@@ -141,7 +135,7 @@ void dm_update_gui( gui_s * const gui )
         // render GUI elements to the screen
         render_display( gui );
 
-#warning "TESTING - sleeping 1 ms"
-        time_sleep_ms( 1 );
+#warning "TESTING - sleeping 10 ms"
+        time_sleep_ms( 10 );
     }
 }

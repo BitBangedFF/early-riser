@@ -41,6 +41,12 @@ void alarm_render(
         gui_alarm_sequence_s * const alarms );
 
 
+//
+void alarm_update(
+        gui_s * const gui,
+        gui_alarm_sequence_s * const alarms );
+
+
 
 
 #endif	/* ALARM_H */

@@ -87,16 +87,21 @@ unsigned long time_get_hour( void );
 
 
 //
+unsigned long time_get_minute( void );
+
+
+//
 unsigned long time_get_ampm_hour(
         const unsigned long hour24,
         bool * const is_pm );
 
 
 //
-timestamp_ms time_get_until_date(
-        const unsigned long week_day,
-        const unsigned long hour,
-        const unsigned long minute );
+bool time_is_day_mon_through_fri( const unsigned long week_day );
+
+
+//
+bool time_is_day_sat_through_sun( const unsigned long week_day );
 
 
 

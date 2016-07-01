@@ -66,10 +66,10 @@ void clock_set_default_configuration( gui_clock_s * const clock )
     {
         clock->font = TEXT_FONT_SARIF_TYPE_FACE;
         clock->font_point_size = 165;
-        clock->digit_color_rgb[0] = 28;
-        clock->digit_color_rgb[1] = 0;
-        clock->digit_color_rgb[2] = 223;
-        clock->digit_color_alpha = 1.0f;
+        clock->digit_color[0] = 28.0f;
+        clock->digit_color[1] = 0.0f;
+        clock->digit_color[2] = 223.0f;
+        clock->digit_color[3] = 1.0f;
 
         // get text height
         clock->font_height = (float) TextHeight(
@@ -114,10 +114,10 @@ void clock_render(
 
     // digit color
     Fill(
-            clock->digit_color_rgb[0],
-            clock->digit_color_rgb[1],
-            clock->digit_color_rgb[2],
-            clock->digit_color_alpha );
+            (unsigned int) clock->digit_color[0],
+            (unsigned int) clock->digit_color[1],
+            (unsigned int) clock->digit_color[2],
+            clock->digit_color[3] );
 
     // render hour/minute text
     TextMid(

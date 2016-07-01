@@ -176,6 +176,15 @@ unsigned long time_get_hour( void )
 
 
 //
+unsigned long time_get_minute( void )
+{
+    const struct tm * const date = time_get_localtime( time_get_timestamp() );
+
+    return (unsigned long) date->tm_min;
+}
+
+
+//
 unsigned long time_get_ampm_hour(
         const unsigned long hour24,
         bool * const is_pm )
@@ -210,12 +219,40 @@ unsigned long time_get_ampm_hour(
 
 
 //
-timestamp_ms time_get_until_date(
-        const unsigned long week_day,
-        const unsigned long hour,
-        const unsigned long minute )
+bool time_is_day_mon_through_fri( const unsigned long week_day )
 {
-#warning "TODO - time_get_until_date"
+    bool is_inclusive = FALSE;
 
-    return 0;
+    if( week_day == DAY_MONDAY_THROUGH_FRIDAY )
+    {
+        is_inclusive = TRUE;
+    }
+    else if( (week_day >= DAY_MONDAY) && (week_day <= DAY_FRIDAY) )
+    {
+        is_inclusive = TRUE;
+    }
+
+    return is_inclusive;
+}
+
+
+//
+bool time_is_day_sat_through_sun( const unsigned long week_day )
+{
+    bool is_inclusive = FALSE;
+
+    if( week_day == DAY_SATURDAY_AND_SUNDAY )
+    {
+        is_inclusive = TRUE;
+    }
+    else if( week_day == DAY_SUNDAY )
+    {
+        is_inclusive = TRUE;
+    }
+    else if( week_day == DAY_SATURDAY )
+    {
+        is_inclusive = TRUE;
+    }
+
+    return is_inclusive;
 }
