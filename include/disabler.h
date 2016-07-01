@@ -22,7 +22,7 @@
 #define DISABLER_DEFAULT_VELOCITY (200.0f)
 
 
-//
+// number of counts/button-presses before disabling the alarms
 #define DISABLER_DEFAULT_STOP_COUNT (5)
 
 
@@ -44,7 +44,7 @@ void disabler_start( gui_disabler_s * const disabler );
 
 
 //
-void disabler_stop( gui_disabler_s * const disabler );
+bool disabler_stop( gui_disabler_s * const disabler );
 
 
 //

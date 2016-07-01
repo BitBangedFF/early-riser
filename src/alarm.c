@@ -132,10 +132,16 @@ static void update_alarm(
 
         if( check_date == TRUE )
         {
-            if( (hour >= alarm->hour) && (minute >= alarm->minute) )
+            const timestamp_ms delta = time_get_since( alarm->enabled_timestamp );
+
+            if( delta >= ALARM_DEFAULT_REENABLE_DELAY )
             {
-                alarm->enabled = TRUE;
-                alarm->enabled_timestamp = time_get_timestamp();
+                // only enable when the minute is match so we don't re-enabled after it passes
+                if( (hour >= alarm->hour) && (minute == alarm->minute) )
+                {
+                    alarm->enabled = TRUE;
+                    alarm->enabled_timestamp = time_get_timestamp();
+                }
             }
         }
     }
@@ -265,7 +271,7 @@ void alarm_set_default_configuration( gui_alarm_config_s * const config )
 
 
 //
-bool are_any_alarms_enabled( const gui_alarm_sequence_s * const alarms )
+bool alarm_are_any_enabled( const gui_alarm_sequence_s * const alarms )
 {
     bool is_enabled = FALSE;
     unsigned long idx = 0;
@@ -279,6 +285,18 @@ bool are_any_alarms_enabled( const gui_alarm_sequence_s * const alarms )
     }
 
     return is_enabled;
+}
+
+
+//
+void alarm_disable_all( const gui_alarm_sequence_s * const alarms )
+{
+    unsigned long idx = 0;
+
+    for( idx = 0; idx < alarms->length; idx += 1 )
+    {
+        alarms->buffer[ idx ].enabled = FALSE;
+    }
 }
 
 

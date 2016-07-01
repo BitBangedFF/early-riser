@@ -155,7 +155,7 @@ int main( int argc, char **argv )
         // start the disabler if not already enabled and alarm(s) are enabled
         if( gui->disabler.enabled == FALSE )
         {
-            const bool alarms_enabled = are_any_alarms_enabled( &gui->alarms );
+            const bool alarms_enabled = alarm_are_any_enabled( &gui->alarms );
 
             if( alarms_enabled == TRUE )
             {
@@ -171,6 +171,16 @@ int main( int argc, char **argv )
 
         // update display manager
         dm_update_gui( gui );
+
+#warning "TESTING alarm disabling"
+        if( gui->disabler.enabled == TRUE )
+        {
+            const bool should_kill = disabler_stop( &gui->disabler );
+            if( should_kill == TRUE )
+            {
+                alarm_disable_all( &gui->alarms );
+            }
+        }
     }
 
     if( gui != NULL )

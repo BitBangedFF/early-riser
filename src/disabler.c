@@ -192,18 +192,45 @@ void disabler_start( gui_disabler_s * const disabler )
 
         disabler->enabled_timestamp = time_get_timestamp();
 
+        disabler->last_stop = time_get_monotonic_timestamp();
+
         disabler->last_update = time_get_monotonic_timestamp();
     }
 }
 
 
 //
-void disabler_stop( gui_disabler_s * const disabler )
+bool disabler_stop( gui_disabler_s * const disabler )
 {
+    bool count_reached = FALSE;
+
     if( disabler != NULL )
     {
-        disabler->enabled = FALSE;
+        if( disabler->enabled == TRUE )
+        {
+            const timestamp_ms now = time_get_monotonic_timestamp();
+
+            const timestamp_ms delta = (now - disabler->last_stop);
+
+            if( delta >= DISABLER_DEFAULT_INTER_STOP_DELAY )
+            {
+                if( disabler->stop_count > 0 )
+                {
+                    disabler->stop_count -= 1;
+                }
+
+                disabler->last_stop = now;
+            }
+
+            if( disabler->stop_count == 0 )
+            {
+                disabler->enabled = FALSE;
+                count_reached = TRUE;
+            }
+        }
     }
+
+    return count_reached;
 }
 
 

@@ -172,6 +172,9 @@ typedef struct
     // monotonic
     timestamp_ms last_update;
     //
+    // monotonic
+    timestamp_ms last_stop;
+    //
     //
     unsigned long stop_count;
     //
