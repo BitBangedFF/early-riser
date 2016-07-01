@@ -38,7 +38,7 @@
 // *****************************************************
 
 //
-static const char *DAY_OF_WEEK_TABLE[] =
+static const char *WEEK_DAY_TABLE[] =
 {
     "Sun",
     "Mon",
@@ -141,7 +141,7 @@ static void render(
                 " - ",
                 sizeof(alarm->display_string) );
 
-        // add day of the week
+        // add week day
         if( alarm->is_monday_through_friday == TRUE )
         {
             // mon-fri
@@ -154,7 +154,7 @@ static void render(
         {
             strncat(
                     alarm->display_string,
-                    DAY_OF_WEEK_TABLE[ local_date->tm_wday ],
+                    WEEK_DAY_TABLE[ local_date->tm_wday ],
                     sizeof(alarm->display_string) );
         }
 
@@ -245,8 +245,9 @@ void alarm_release( gui_alarm_sequence_s * const alarms )
 //
 void alarm_add(
         const char * const name,
-        const timestamp_ms utc_time,
-        const bool is_mon_through_fri,
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute,
         gui_alarm_sequence_s * const alarms )
 {
     resize_sequence( alarms, alarms->length + 1 );
@@ -257,15 +258,15 @@ void alarm_add(
 
     strncpy( alarm->name, name, sizeof(alarm->name) );
 
-    alarm->utc_time = utc_time;
+//    alarm->utc_time = utc_time;
 
-    alarm->is_monday_through_friday = is_mon_through_fri;
+//    alarm->is_monday_through_friday = is_mon_through_fri;
 
     // enable if time hasn't already past
-    if( time_get_timestamp() < utc_time )
-    {
-        alarm->enabled = TRUE;
-    }
+//    if( time_get_timestamp() < utc_time )
+//    {
+//        alarm->enabled = TRUE;
+//    }
 }
 
 

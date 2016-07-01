@@ -29,8 +29,9 @@ void alarm_release( gui_alarm_sequence_s * const alarms );
 //
 void alarm_add(
         const char * const name,
-        const timestamp_ms utc_time,
-        const bool is_mon_through_fri,
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute,
         gui_alarm_sequence_s * const alarms );
 
 

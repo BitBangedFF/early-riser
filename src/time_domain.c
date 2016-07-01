@@ -155,3 +155,29 @@ struct tm *time_get_localtime( const timestamp_ms const timestamp )
 
     return localtime( &time_sec );
 }
+
+
+//
+unsigned long time_get_week_day( void )
+{
+    const struct tm * const date = time_get_localtime( time_get_timestamp() );
+
+    return (unsigned long) date->tm_wday;
+}
+
+
+//
+timestamp_ms time_get_until_date(
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute )
+{
+    timestamp_ms delta = 0;
+
+    const struct tm * const date = time_get_localtime( time_get_timestamp() );
+
+//    if( week_day )
+#warning "TODO - time_get_until_date"
+
+    return delta;
+}
