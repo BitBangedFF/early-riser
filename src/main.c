@@ -109,6 +109,9 @@ int main( int argc, char **argv )
         // default calendar configuration
         calendar_set_default_configuration( &gui->calendar );
 
+        // default alarm configuration
+        alarm_set_default_configuration( &gui->alarms.config );
+
 #warning "TESTING alarm"
         alarm_add(
                 "test alarm 1",

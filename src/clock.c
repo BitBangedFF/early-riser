@@ -90,7 +90,7 @@ void clock_render(
     // format digits
     if( local_date != NULL )
     {
-        // convert 24 hour clock with 12 (AM/PM is implied)
+        // convert 24 hour clock to 12 (AM/PM is implied)
         int am_pm_hour = local_date->tm_hour;
 
         // 12:00 AM

@@ -19,7 +19,7 @@
 
 
 //
-void alarm_set_default_configuration( gui_alarm_s * const alarm );
+void alarm_set_default_configuration( gui_alarm_config_s * const config );
 
 
 //

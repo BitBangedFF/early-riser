@@ -49,6 +49,7 @@
 #define DAY_FRIDAY (5)
 #define DAY_SATURDAY (6)
 #define DAY_MONDAY_THROUGH_FRIDAY (7)
+#define DAY_SATURDAY_AND_SUNDAY (8)
 
 
 
@@ -79,6 +80,16 @@ struct tm *time_get_localtime( const timestamp_ms const timestamp );
 
 //
 unsigned long time_get_week_day( void );
+
+
+//
+unsigned long time_get_hour( void );
+
+
+//
+unsigned long time_get_ampm_hour(
+        const unsigned long hour24,
+        bool * const is_pm );
 
 
 //
