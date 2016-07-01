@@ -265,6 +265,24 @@ void alarm_set_default_configuration( gui_alarm_config_s * const config )
 
 
 //
+bool are_any_alarms_enabled( const gui_alarm_sequence_s * const alarms )
+{
+    bool is_enabled = FALSE;
+    unsigned long idx = 0;
+
+    for( idx = 0; (idx < alarms->length) && (is_enabled == FALSE); idx += 1 )
+    {
+        if( alarms->buffer[ idx ].enabled == TRUE )
+        {
+            is_enabled = TRUE;
+        }
+    }
+
+    return is_enabled;
+}
+
+
+//
 void alarm_release( gui_alarm_sequence_s * const alarms )
 {
     if( alarms != NULL )

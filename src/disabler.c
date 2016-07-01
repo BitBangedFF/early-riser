@@ -132,9 +132,9 @@ void disabler_set_default_configuration(
 
         disabler->font = TEXT_FONT_SARIF_TYPE_FACE;
         disabler->font_point_size = 30;
-        disabler->digit_color[0] = 100.0f;
-        disabler->digit_color[1] = 100.0f;
-        disabler->digit_color[2] = 100.0f;
+        disabler->digit_color[0] = 0.0f;
+        disabler->digit_color[1] = 0.0f;
+        disabler->digit_color[2] = 0.0f;
         disabler->digit_color[3] = 1.0f;
 
         disabler->color[0] = 255.0f;
@@ -147,11 +147,6 @@ void disabler_set_default_configuration(
                 *((Fontinfo*) font_get( disabler->font )),
                 (int) disabler->font_point_size );
 
-        disabler->radius = 1.5f * disabler->font_height;
-
-        disabler->position[0] = ((rand() / (float) RAND_MAX) - 0.5f) * ((float) win_width / 5.0f);
-        disabler->position[1] = ((rand() / (float) RAND_MAX) - 0.5f) * ((float) win_height / 5.0f);
-
         disabler->win_width = win_width;
         disabler->win_height = win_height;
 
@@ -160,8 +155,15 @@ void disabler_set_default_configuration(
         disabler->max_bounds[0] = ((float) win_width / 2.0f) - disabler->font_height;
         disabler->max_bounds[1] = ((float) win_height / 2.0f) - disabler->font_height;
 
-        disabler->velocity[0] = DISABLER_DEFAULT_VELOCITY * 1.0f;
-        disabler->velocity[1] = DISABLER_DEFAULT_VELOCITY * 0.9f;
+        disabler->radius = 1.5f * disabler->font_height;
+
+        disabler->position[0] = ((rand() / (float) RAND_MAX) - 0.5f) * ((float) win_width / 4.0f);
+        disabler->position[1] = ((rand() / (float) RAND_MAX) - 0.5f) * ((float) win_height / 4.0f);
+
+        disabler->velocity[0] = DISABLER_DEFAULT_VELOCITY;
+        disabler->velocity[1] = DISABLER_DEFAULT_VELOCITY;
+
+        disabler->stop_count = DISABLER_DEFAULT_STOP_COUNT;
 
         if( ((rand() / (float) RAND_MAX) - 0.5f) < 0.0f )
         {
@@ -212,8 +214,14 @@ void disabler_render(
 {
     if( disabler->enabled == TRUE )
     {
+        snprintf(
+                disabler->display_string,
+                sizeof(disabler->display_string),
+                "%lu",
+                disabler->stop_count );
+
         // select font
-//        Fontinfo * const font = (Fontinfo*) font_get( disabler->font );
+        Fontinfo * const font = (Fontinfo*) font_get( disabler->font );
 
         // stroke width
         StrokeWidth( 0.0f );
@@ -233,6 +241,21 @@ void disabler_render(
                 get_window_x( &gui->display, disabler->position[0] ),
                 get_window_y( &gui->display, disabler->position[1] ),
                 disabler->radius );
+
+        // text color
+        Fill(
+            (unsigned int) disabler->digit_color[0],
+            (unsigned int) disabler->digit_color[1],
+            (unsigned int) disabler->digit_color[2],
+            disabler->digit_color[3] );
+
+        // render text
+        TextMid(
+            get_window_x( &gui->display, disabler->position[0] ),
+            get_window_y( &gui->display, disabler->position[1] ) - (disabler->font_height / 3.0f),
+            disabler->display_string,
+            *font,
+            (int) disabler->font_point_size );
     }
 }
 

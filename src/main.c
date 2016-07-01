@@ -123,27 +123,13 @@ int main( int argc, char **argv )
                 gui->display.win_height,
                 &gui->disabler );
 
-#warning "TESTING alarm"
+#warning "TESTING example alarms"
         alarm_add(
                 "test alarm 1",
                 DAY_MONDAY_THROUGH_FRIDAY,
                 13,
                 25,
                 &gui->alarms );
-
-//        alarm_add(
-//                "test alarm 2",
-//                DAY_MONDAY,
-//                8,
-//                22,
-//                &gui->alarms );
-//
-//        alarm_add(
-//                "test alarm 3",
-//                DAY_SATURDAY_AND_SUNDAY,
-//                5,
-//                00,
-//                &gui->alarms );
 
         alarm_add(
                 "test alarm 2",
@@ -158,16 +144,24 @@ int main( int argc, char **argv )
                 time_get_hour(),
                 time_get_minute() + 2,
                 &gui->alarms );
-
-#warning "TESTING - disabler"
-        disabler_start( &gui->disabler );
     }
 
     // main loop
     while( global_exit_signal == 0 )
     {
-        // update current clock time
+        // update current UTC clock time
         gui->utc_clock_time = time_get_timestamp();
+
+        // start the disabler if not already enabled and alarm(s) are enabled
+        if( gui->disabler.enabled == FALSE )
+        {
+            const bool alarms_enabled = are_any_alarms_enabled( &gui->alarms );
+
+            if( alarms_enabled == TRUE )
+            {
+                disabler_start( &gui->disabler );
+            }
+        }
 
         // update state of the alarms
         alarm_update( gui, &gui->alarms );

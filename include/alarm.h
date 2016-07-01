@@ -27,6 +27,10 @@ void alarm_release( gui_alarm_sequence_s * const alarms );
 
 
 //
+bool are_any_alarms_enabled( const gui_alarm_sequence_s * const alarms );
+
+
+//
 void alarm_add(
         const char * const name,
         const unsigned long week_day,

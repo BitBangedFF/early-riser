@@ -173,6 +173,9 @@ typedef struct
     timestamp_ms last_update;
     //
     //
+    unsigned long stop_count;
+    //
+    //
     float position[2];
     //
     //
@@ -192,6 +195,9 @@ typedef struct
     //
     //
     unsigned long win_height;
+    //
+    //
+    char display_string[32];
     //
     //
     float color[4];

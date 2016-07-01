@@ -19,7 +19,15 @@
 
 
 // pixels/second
-#define DISABLER_DEFAULT_VELOCITY (100.0f)
+#define DISABLER_DEFAULT_VELOCITY (200.0f)
+
+
+//
+#define DISABLER_DEFAULT_STOP_COUNT (5)
+
+
+// ms
+#define DISABLER_DEFAULT_INTER_STOP_DELAY (1000)
 
 
 
