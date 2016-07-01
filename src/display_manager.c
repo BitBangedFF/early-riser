@@ -23,6 +23,7 @@
 #include "clock.h"
 #include "calendar.h"
 #include "alarm.h"
+#include "disabler.h"
 #include "display_manager.h"
 
 
@@ -70,6 +71,9 @@ static void render_display( gui_s * const gui )
 
     // render the alarms
     alarm_render( gui, &gui->alarms );
+
+    // render the disabler
+    disabler_render( gui, &gui->disabler );
 
     // render to buffer/screen
     End();

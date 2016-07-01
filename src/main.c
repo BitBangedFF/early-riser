@@ -12,12 +12,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+#include <time.h>
 
 #include "gui.h"
 #include "time_domain.h"
 #include "clock.h"
 #include "calendar.h"
 #include "alarm.h"
+#include "disabler.h"
 #include "display_manager.h"
 
 
@@ -74,6 +76,9 @@ int main( int argc, char **argv )
 
     global_exit_signal = 0;
 
+    // seed random numbers
+    srand( time(NULL) );
+
     // hook up the control-c signal handler, sets exit signaled flag
     signal( SIGINT, sig_handler );
 
@@ -112,27 +117,19 @@ int main( int argc, char **argv )
         // default alarm configuration
         alarm_set_default_configuration( &gui->alarms.config );
 
-#warning "TESTING alarm"
+        // default disabler configuration
+        disabler_set_default_configuration(
+                gui->display.win_width,
+                gui->display.win_height,
+                &gui->disabler );
+
+#warning "TESTING example alarms"
         alarm_add(
                 "test alarm 1",
                 DAY_MONDAY_THROUGH_FRIDAY,
                 13,
                 25,
                 &gui->alarms );
-
-//        alarm_add(
-//                "test alarm 2",
-//                DAY_MONDAY,
-//                8,
-//                22,
-//                &gui->alarms );
-//
-//        alarm_add(
-//                "test alarm 3",
-//                DAY_SATURDAY_AND_SUNDAY,
-//                5,
-//                00,
-//                &gui->alarms );
 
         alarm_add(
                 "test alarm 2",
@@ -152,13 +149,27 @@ int main( int argc, char **argv )
     // main loop
     while( global_exit_signal == 0 )
     {
-        // update current clock time
+        // update current UTC clock time
         gui->utc_clock_time = time_get_timestamp();
+
+        // start the disabler if not already enabled and alarm(s) are enabled
+        if( gui->disabler.enabled == FALSE )
+        {
+            const bool alarms_enabled = alarm_are_any_enabled( &gui->alarms );
+
+            if( alarms_enabled == TRUE )
+            {
+                disabler_start( &gui->disabler );
+            }
+        }
 
         // update state of the alarms
         alarm_update( gui, &gui->alarms );
 
-        //
+        // update state of the disabler
+        disabler_update( gui, &gui->disabler );
+
+        // update display manager
         dm_update_gui( gui );
     }
 
