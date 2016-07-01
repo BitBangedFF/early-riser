@@ -171,16 +171,6 @@ int main( int argc, char **argv )
 
         // update display manager
         dm_update_gui( gui );
-
-#warning "TESTING alarm disabling"
-        if( gui->disabler.enabled == TRUE )
-        {
-            const bool should_kill = disabler_stop( &gui->disabler );
-            if( should_kill == TRUE )
-            {
-                alarm_disable_all( &gui->alarms );
-            }
-        }
     }
 
     if( gui != NULL )
