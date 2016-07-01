@@ -13,6 +13,7 @@ SRCS := src/display_manager.c \
 	src/calendar.c \
 	src/clock.c \
 	src/alarm.c \
+	src/disabler.c \
 	src/main.c
 
 # object files, dep files

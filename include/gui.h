@@ -164,6 +164,45 @@ typedef struct
 {
     //
     //
+    bool enabled;
+    //
+    //
+    timestamp_ms enabled_timestamp;
+    //
+    // monotonic
+    timestamp_ms last_update;
+    //
+    //
+    float position[2];
+    //
+    //
+    float radius;
+    //
+    //
+    float velocity[2];
+    //
+    //
+    float color[4];
+    //
+    //
+    gui_text_font_kind font;
+    //
+    //
+    float font_height;
+    //
+    //
+    unsigned int font_point_size;
+    //
+    //
+    float digit_color[4];
+} gui_disabler_s;
+
+
+//
+typedef struct
+{
+    //
+    //
     unsigned int win_width;
     //
     //
@@ -192,6 +231,9 @@ typedef struct
     //
     //
     gui_alarm_sequence_s alarms;
+    //
+    //
+    gui_disabler_s disabler;
     //
     //
     unsigned int background_color_rgb[3];

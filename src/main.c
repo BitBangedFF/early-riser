@@ -18,6 +18,7 @@
 #include "clock.h"
 #include "calendar.h"
 #include "alarm.h"
+#include "disabler.h"
 #include "display_manager.h"
 
 
@@ -112,6 +113,9 @@ int main( int argc, char **argv )
         // default alarm configuration
         alarm_set_default_configuration( &gui->alarms.config );
 
+        // default disabler configuration
+        disabler_set_default_configuration( &gui->disabler );
+
 #warning "TESTING alarm"
         alarm_add(
                 "test alarm 1",
@@ -147,6 +151,9 @@ int main( int argc, char **argv )
                 time_get_hour(),
                 time_get_minute() + 2,
                 &gui->alarms );
+
+#warning "TESTING - disabler"
+        disabler_start( &gui->disabler );
     }
 
     // main loop
@@ -158,7 +165,10 @@ int main( int argc, char **argv )
         // update state of the alarms
         alarm_update( gui, &gui->alarms );
 
-        //
+        // update state of the disabler
+        disabler_update( gui, &gui->disabler );
+
+        // update display manager
         dm_update_gui( gui );
     }
 
