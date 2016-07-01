@@ -12,6 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+#include <time.h>
 
 #include "gui.h"
 #include "time_domain.h"
@@ -75,6 +76,9 @@ int main( int argc, char **argv )
 
     global_exit_signal = 0;
 
+    // seed random numbers
+    srand( time(NULL) );
+
     // hook up the control-c signal handler, sets exit signaled flag
     signal( SIGINT, sig_handler );
 
@@ -114,7 +118,10 @@ int main( int argc, char **argv )
         alarm_set_default_configuration( &gui->alarms.config );
 
         // default disabler configuration
-        disabler_set_default_configuration( &gui->disabler );
+        disabler_set_default_configuration(
+                gui->display.win_width,
+                gui->display.win_height,
+                &gui->disabler );
 
 #warning "TESTING alarm"
         alarm_add(

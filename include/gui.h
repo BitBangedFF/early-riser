@@ -182,6 +182,18 @@ typedef struct
     float velocity[2];
     //
     //
+    float min_bounds[2];
+    //
+    //
+    float max_bounds[2];
+    //
+    //
+    unsigned long win_width;
+    //
+    //
+    unsigned long win_height;
+    //
+    //
     float color[4];
     //
     //
@@ -203,10 +215,10 @@ typedef struct
 {
     //
     //
-    unsigned int win_width;
+    unsigned long win_width;
     //
     //
-    unsigned int win_height;
+    unsigned long win_height;
     //
     //
     unsigned long long render_cnt;

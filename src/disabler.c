@@ -84,8 +84,28 @@ static void update_position( gui_disabler_s * const disabler )
     disabler->position[1] += (disabler->velocity[1] * dt);
 
     // check for change in x direction
+    if( disabler->position[0] < disabler->min_bounds[0] )
+    {
+        disabler->velocity[0] = -disabler->velocity[0];
+        disabler->position[0] += (disabler->velocity[0] * dt);
+    }
+    else if( disabler->position[0] > disabler->max_bounds[0] )
+    {
+        disabler->velocity[0] = -disabler->velocity[0];
+        disabler->position[0] += (disabler->velocity[0] * dt);
+    }
 
     // check for change in y direction
+    if( disabler->position[1] < disabler->min_bounds[1] )
+    {
+        disabler->velocity[1] = -disabler->velocity[1];
+        disabler->position[1] += (disabler->velocity[1] * dt);
+    }
+    else if( disabler->position[1] > disabler->max_bounds[1] )
+    {
+        disabler->velocity[1] = -disabler->velocity[1];
+        disabler->position[1] += (disabler->velocity[1] * dt);
+    }
 
     disabler->last_update = now;
 }
@@ -98,7 +118,10 @@ static void update_position( gui_disabler_s * const disabler )
 // *****************************************************
 
 //
-void disabler_set_default_configuration( gui_disabler_s * const disabler )
+void disabler_set_default_configuration(
+        const unsigned long win_width,
+        const unsigned long win_height,
+        gui_disabler_s * const disabler )
 {
     // default disabler configuration
     if( disabler != NULL )
@@ -126,11 +149,29 @@ void disabler_set_default_configuration( gui_disabler_s * const disabler )
 
         disabler->radius = 1.5f * disabler->font_height;
 
-        disabler->position[0] = 0.0f;
-        disabler->position[1] = 0.0f;
+        disabler->position[0] = ((rand() / (float) RAND_MAX) - 0.5f) * ((float) win_width / 5.0f);
+        disabler->position[1] = ((rand() / (float) RAND_MAX) - 0.5f) * ((float) win_height / 5.0f);
 
-        disabler->velocity[0] = DISABLER_DEFAULT_VELOCITY;
-        disabler->velocity[1] = DISABLER_DEFAULT_VELOCITY;
+        disabler->win_width = win_width;
+        disabler->win_height = win_height;
+
+        disabler->min_bounds[0] = -1.0f * ((float) win_width / 2.0f) + disabler->font_height;
+        disabler->min_bounds[1] = -1.0f * ((float) win_height / 2.0f) + disabler->font_height;
+        disabler->max_bounds[0] = ((float) win_width / 2.0f) - disabler->font_height;
+        disabler->max_bounds[1] = ((float) win_height / 2.0f) - disabler->font_height;
+
+        disabler->velocity[0] = DISABLER_DEFAULT_VELOCITY * 1.0f;
+        disabler->velocity[1] = DISABLER_DEFAULT_VELOCITY * 0.9f;
+
+        if( ((rand() / (float) RAND_MAX) - 0.5f) < 0.0f )
+        {
+            disabler->velocity[0] = -disabler->velocity[0];
+        }
+
+        if( ((rand() / (float) RAND_MAX) - 0.5f) < 0.0f )
+        {
+            disabler->velocity[1] = -disabler->velocity[1];
+        }
     }
 }
 
@@ -140,7 +181,10 @@ void disabler_start( gui_disabler_s * const disabler )
 {
     if( disabler != NULL )
     {
-        disabler_set_default_configuration( disabler );
+        disabler_set_default_configuration(
+                disabler->win_width,
+                disabler->win_height,
+                disabler );
 
         disabler->enabled = TRUE;
 

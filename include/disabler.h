@@ -25,7 +25,10 @@
 
 
 //
-void disabler_set_default_configuration( gui_disabler_s * const disabler );
+void disabler_set_default_configuration(
+        const unsigned long win_width,
+        const unsigned long win_height,
+        gui_disabler_s * const disabler );
 
 
 //
