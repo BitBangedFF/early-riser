@@ -67,10 +67,7 @@ typedef struct
     unsigned int font_point_size;
     //
     //
-    unsigned int digit_color_rgb[3];
-    //
-    //
-    float digit_color_alpha;
+    float digit_color[4];
 } gui_clock_s;
 
 
@@ -91,10 +88,7 @@ typedef struct
     unsigned int font_point_size;
     //
     //
-    unsigned int digit_color_rgb[3];
-    //
-    //
-    float digit_color_alpha;
+    float digit_color[4];
 } gui_calendar_s;
 
 
@@ -107,6 +101,9 @@ typedef struct
     //
     //
     bool enabled;
+    //
+    //
+    timestamp_ms enabled_timestamp;
     //
     //
     unsigned long week_day;
@@ -139,10 +136,10 @@ typedef struct
     unsigned int font_point_size;
     //
     //
-    unsigned int digit_color_rgb[3];
+    float digit_color[4];
     //
     //
-    float digit_color_alpha;
+    float enabled_digit_color[4];
 } gui_alarm_config_s;
 
 

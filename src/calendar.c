@@ -66,10 +66,10 @@ void calendar_set_default_configuration( gui_calendar_s * const calendar )
     {
         calendar->font = TEXT_FONT_SARIF_TYPE_FACE;
         calendar->font_point_size = 30;
-        calendar->digit_color_rgb[0] = 28;
-        calendar->digit_color_rgb[1] = 0;
-        calendar->digit_color_rgb[2] = 223;
-        calendar->digit_color_alpha = 0.8f;
+        calendar->digit_color[0] = 28.0f;
+        calendar->digit_color[1] = 0.0f;
+        calendar->digit_color[2] = 223.0f;
+        calendar->digit_color[3] = 0.8f;
 
         // get text height
         calendar->font_height = (float) TextHeight(
@@ -116,10 +116,10 @@ void calendar_render(
 
     // text color
     Fill(
-            calendar->digit_color_rgb[0],
-            calendar->digit_color_rgb[1],
-            calendar->digit_color_rgb[2],
-            calendar->digit_color_alpha );
+            (unsigned int) calendar->digit_color[0],
+            (unsigned int) calendar->digit_color[1],
+            (unsigned int) calendar->digit_color[2],
+            calendar->digit_color[3] );
 
     // render date text
     TextMid(

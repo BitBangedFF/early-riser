@@ -120,18 +120,32 @@ int main( int argc, char **argv )
                 25,
                 &gui->alarms );
 
+//        alarm_add(
+//                "test alarm 2",
+//                DAY_MONDAY,
+//                8,
+//                22,
+//                &gui->alarms );
+//
+//        alarm_add(
+//                "test alarm 3",
+//                DAY_SATURDAY_AND_SUNDAY,
+//                5,
+//                00,
+//                &gui->alarms );
+
         alarm_add(
                 "test alarm 2",
-                DAY_MONDAY,
-                8,
-                22,
+                DAY_MONDAY_THROUGH_FRIDAY,
+                time_get_hour(),
+                time_get_minute() + 1,
                 &gui->alarms );
 
         alarm_add(
                 "test alarm 3",
-                DAY_SATURDAY_AND_SUNDAY,
-                5,
-                00,
+                time_get_week_day(),
+                time_get_hour(),
+                time_get_minute() + 2,
                 &gui->alarms );
     }
 
@@ -140,6 +154,9 @@ int main( int argc, char **argv )
     {
         // update current clock time
         gui->utc_clock_time = time_get_timestamp();
+
+        // update state of the alarms
+        alarm_update( gui, &gui->alarms );
 
         //
         dm_update_gui( gui );
