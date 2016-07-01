@@ -106,19 +106,28 @@ typedef struct
     char name[256];
     //
     //
-    timestamp_ms utc_time;
-    //
-    //
-    bool is_monday_through_friday;
-    //
-    //
     bool enabled;
+    //
+    //
+    unsigned long week_day;
+    //
+    //
+    unsigned long hour;
+    //
+    //
+    unsigned long minute;
     //
     //
     char display_string[1024];
     //
     //
     char time_string[256];
+} gui_alarm_s;
+
+
+//
+typedef struct
+{
     //
     //
     gui_text_font_kind font;
@@ -134,12 +143,13 @@ typedef struct
     //
     //
     float digit_color_alpha;
-} gui_alarm_s;
+} gui_alarm_config_s;
 
 
 //
 typedef struct
 {
+    gui_alarm_config_s config;
     //
     //
     unsigned long length;

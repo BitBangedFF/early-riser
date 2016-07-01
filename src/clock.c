@@ -81,7 +81,7 @@ void clock_set_default_configuration( gui_clock_s * const clock )
 
 //
 void clock_render(
-        gui_s * const gui,
+        const gui_s * const gui,
         gui_clock_s * const clock )
 {
     // get local time date
@@ -90,25 +90,16 @@ void clock_render(
     // format digits
     if( local_date != NULL )
     {
-        // convert 24 hour clock with 12 (AM/PM is implied)
-        int am_pm_hour = local_date->tm_hour;
-
-        // 12:00 AM
-        if( am_pm_hour == 0 )
-        {
-            am_pm_hour = 12;
-        }
-        else if( am_pm_hour > 12 )
-        {
-            // 1:00 PM
-            am_pm_hour -= 12;
-        }
+        // convert 24 hour clock to 12 (AM/PM is implied)
+        const unsigned long ampm_hour = time_get_ampm_hour(
+                (unsigned long) local_date->tm_hour,
+                NULL );
 
         snprintf(
                 clock->time_string,
                 sizeof(clock->time_string),
-                "%02d:%02d",
-                am_pm_hour,
+                "%02lu:%02d",
+                ampm_hour,
                 local_date->tm_min );
     }
 

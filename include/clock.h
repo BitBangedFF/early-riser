@@ -24,7 +24,7 @@ void clock_set_default_configuration( gui_clock_s * const clock );
 
 //
 void clock_render(
-        gui_s * const gui,
+        const gui_s * const gui,
         gui_clock_s * const clock );
 
 

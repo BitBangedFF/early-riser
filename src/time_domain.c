@@ -155,3 +155,67 @@ struct tm *time_get_localtime( const timestamp_ms const timestamp )
 
     return localtime( &time_sec );
 }
+
+
+//
+unsigned long time_get_week_day( void )
+{
+    const struct tm * const date = time_get_localtime( time_get_timestamp() );
+
+    return (unsigned long) date->tm_wday;
+}
+
+
+//
+unsigned long time_get_hour( void )
+{
+    const struct tm * const date = time_get_localtime( time_get_timestamp() );
+
+    return (unsigned long) date->tm_hour;
+}
+
+
+//
+unsigned long time_get_ampm_hour(
+        const unsigned long hour24,
+        bool * const is_pm )
+{
+    unsigned long hour12 = hour24;
+
+    if( hour24 == 0 )
+    {
+        // 12:00 AM
+        hour12 = 12;
+    }
+    else if( hour24 > 12 )
+    {
+        // 1:00 PM
+        hour12 -= 12;
+    }
+
+    if( is_pm != NULL )
+    {
+        if( hour24 >= 12 )
+        {
+            (*is_pm) = TRUE;
+        }
+        else
+        {
+            (*is_pm) = FALSE;
+        }
+    }
+
+    return hour12;
+}
+
+
+//
+timestamp_ms time_get_until_date(
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute )
+{
+#warning "TODO - time_get_until_date"
+
+    return 0;
+}

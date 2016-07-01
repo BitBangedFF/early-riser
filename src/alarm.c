@@ -38,7 +38,7 @@
 // *****************************************************
 
 //
-static const char *DAY_OF_WEEK_TABLE[] =
+static const char *WEEK_DAY_TABLE[] =
 {
     "Sun",
     "Mon",
@@ -47,12 +47,10 @@ static const char *DAY_OF_WEEK_TABLE[] =
     "Thur",
     "Fri",
     "Sat",
+    "Mon-Fri",
+    "Sat-Sun",
     NULL
 };
-
-
-//
-static const char MONDAY_THROUGH_FRIDAY[] = "Mon-Fri";
 
 
 
@@ -91,88 +89,59 @@ static void resize_sequence(
 
 //
 static void render(
-        gui_s * const gui,
+        const gui_s * const gui,
+        const gui_alarm_config_s * const config,
         gui_alarm_s * const alarm,
         const float ypos )
 {
-    // get local time date
-    const struct tm * const local_date = time_get_localtime( alarm->utc_time );
 
-    // format digits
-    if( local_date != NULL )
-    {
-        // convert 24 hour clock with 12 (AM/PM is implied)
-        int am_pm_hour = local_date->tm_hour;
-        bool is_pm = false;
+    bool is_pm = FALSE;
 
-        // 12:00 AM
-        if( am_pm_hour == 0 )
-        {
-            am_pm_hour = 12;
-        }
-        else if( am_pm_hour > 12 )
-        {
-            // 1:00 PM
-            am_pm_hour -= 12;
-        }
+    const unsigned long ampm_hour = time_get_ampm_hour(
+            alarm->hour,
+            &is_pm );
 
-        if( local_date->tm_hour >= 12 )
-        {
-            is_pm = TRUE;
-        }
+    // hr:min AM/PM
+    snprintf(
+            alarm->time_string,
+            sizeof(alarm->time_string),
+            "%02lu:%02lu %s",
+            ampm_hour,
+            alarm->minute,
+            (is_pm == TRUE) ? "PM" : "AM" );
 
-        snprintf(
-                alarm->time_string,
-                sizeof(alarm->time_string),
-                "%02d:%02d %s",
-                am_pm_hour,
-                local_date->tm_min,
-                (is_pm == TRUE) ? "PM" : "AM" );
+    // add alarm name
+    strncpy(
+            alarm->display_string,
+            alarm->name,
+            sizeof(alarm->display_string) );
 
-        // add alarm name
-        strncpy(
-                alarm->display_string,
-                alarm->name,
-                sizeof(alarm->display_string) );
+    // add ' - ' token
+    strncat(
+            alarm->display_string,
+            " - ",
+            sizeof(alarm->display_string) );
 
-        // add ' - ' token
-        strncat(
-                alarm->display_string,
-                " - ",
-                sizeof(alarm->display_string) );
+    // add week day
+    strncat(
+            alarm->display_string,
+            WEEK_DAY_TABLE[ alarm->week_day ],
+            sizeof(alarm->display_string) );
 
-        // add day of the week
-        if( alarm->is_monday_through_friday == TRUE )
-        {
-            // mon-fri
-            strncat(
-                    alarm->display_string,
-                    MONDAY_THROUGH_FRIDAY,
-                    sizeof(alarm->display_string) );
-        }
-        else
-        {
-            strncat(
-                    alarm->display_string,
-                    DAY_OF_WEEK_TABLE[ local_date->tm_wday ],
-                    sizeof(alarm->display_string) );
-        }
+    // add ' ' token
+    strncat(
+            alarm->display_string,
+            " ",
+            sizeof(alarm->display_string) );
 
-        // add ' ' token
-        strncat(
-                alarm->display_string,
-                " ",
-                sizeof(alarm->display_string) );
-
-        // add time in 12 hour (am/pm) format
-        strncat(
-                alarm->display_string,
-                alarm->time_string,
-                sizeof(alarm->display_string) );
-    }
+    // add time in 12 hour (am/pm) format
+    strncat(
+            alarm->display_string,
+            alarm->time_string,
+            sizeof(alarm->display_string) );
 
     // select font
-    Fontinfo * const font = (Fontinfo*) font_get( alarm->font );
+    Fontinfo * const font = (Fontinfo*) font_get( config->font );
 
     // stroke width
     StrokeWidth( 0.0f );
@@ -182,10 +151,10 @@ static void render(
 
     // text color
     Fill(
-            alarm->digit_color_rgb[0],
-            alarm->digit_color_rgb[1],
-            alarm->digit_color_rgb[2],
-            alarm->digit_color_alpha );
+            config->digit_color_rgb[0],
+            config->digit_color_rgb[1],
+            config->digit_color_rgb[2],
+            config->digit_color_alpha );
 
     // render text
     Text(
@@ -193,7 +162,7 @@ static void render(
             ypos,
             alarm->display_string,
             *font,
-            (int) alarm->font_point_size );
+            (int) config->font_point_size );
 }
 
 
@@ -204,24 +173,22 @@ static void render(
 // *****************************************************
 
 //
-void alarm_set_default_configuration( gui_alarm_s * const alarm )
+void alarm_set_default_configuration( gui_alarm_config_s * const config )
 {
     // default alarm configuration
-    if( alarm != NULL )
+    if( config != NULL )
     {
-        alarm->font = TEXT_FONT_SARIF_TYPE_FACE;
-        alarm->font_point_size = 20;
-        alarm->digit_color_rgb[0] = 100;
-        alarm->digit_color_rgb[1] = 100;
-        alarm->digit_color_rgb[2] = 100;
-        alarm->digit_color_alpha = 0.5f;
-        alarm->is_monday_through_friday = FALSE;
-        alarm->enabled = FALSE;
+        config->font = TEXT_FONT_SARIF_TYPE_FACE;
+        config->font_point_size = 20;
+        config->digit_color_rgb[0] = 100;
+        config->digit_color_rgb[1] = 100;
+        config->digit_color_rgb[2] = 100;
+        config->digit_color_alpha = 0.5f;
 
         // get text height
-        alarm->font_height = (float) TextHeight(
-                *((Fontinfo*) font_get( alarm->font )),
-                (int) alarm->font_point_size );
+        config->font_height = (float) TextHeight(
+                *((Fontinfo*) font_get( config->font )),
+                (int) config->font_point_size );
     }
 }
 
@@ -245,27 +212,21 @@ void alarm_release( gui_alarm_sequence_s * const alarms )
 //
 void alarm_add(
         const char * const name,
-        const timestamp_ms utc_time,
-        const bool is_mon_through_fri,
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute,
         gui_alarm_sequence_s * const alarms )
 {
     resize_sequence( alarms, alarms->length + 1 );
 
     gui_alarm_s * const alarm = &alarms->buffer[ alarms->length - 1 ];
 
-    alarm_set_default_configuration( alarm );
+    memset( alarm, 0, sizeof(*alarm) );
 
     strncpy( alarm->name, name, sizeof(alarm->name) );
-
-    alarm->utc_time = utc_time;
-
-    alarm->is_monday_through_friday = is_mon_through_fri;
-
-    // enable if time hasn't already past
-    if( time_get_timestamp() < utc_time )
-    {
-        alarm->enabled = TRUE;
-    }
+    alarm->week_day = week_day;
+    alarm->hour = hour;
+    alarm->minute = minute;
 }
 
 
@@ -283,18 +244,15 @@ void alarm_render(
     {
         gui_alarm_s * const alarm = &alarms->buffer[ idx ];
 
-        if( alarm->enabled == TRUE )
+        float ypos = 0.0f;
+
+        if( base_y > dy )
         {
-            float ypos = 0.0f;
-
-            if( base_y > dy )
-            {
-                ypos = base_y - dy;
-            }
-
-            render( gui, alarm, ypos );
-
-            dy += 2.0f * alarm->font_height;
+            ypos = base_y - dy;
         }
+
+        render( gui, &alarms->config, alarm, ypos );
+
+        dy += 2.0f * alarms->config.font_height;
     }
 }

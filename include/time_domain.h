@@ -40,6 +40,18 @@
 #define NANO_TO_MILLI(time) (time / 1000000ULL)
 
 
+//
+#define DAY_SUNDAY (0)
+#define DAY_MONDAY (1)
+#define DAY_TUESDAY (2)
+#define DAY_WEDNESDAY (3)
+#define DAY_THURSDAY (4)
+#define DAY_FRIDAY (5)
+#define DAY_SATURDAY (6)
+#define DAY_MONDAY_THROUGH_FRIDAY (7)
+#define DAY_SATURDAY_AND_SUNDAY (8)
+
+
 
 
 //
@@ -64,6 +76,27 @@ timestamp_ms time_get_until( const timestamp_ms const value );
 
 //
 struct tm *time_get_localtime( const timestamp_ms const timestamp );
+
+
+//
+unsigned long time_get_week_day( void );
+
+
+//
+unsigned long time_get_hour( void );
+
+
+//
+unsigned long time_get_ampm_hour(
+        const unsigned long hour24,
+        bool * const is_pm );
+
+
+//
+timestamp_ms time_get_until_date(
+        const unsigned long week_day,
+        const unsigned long hour,
+        const unsigned long minute );
 
 
 
