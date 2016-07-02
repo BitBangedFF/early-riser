@@ -14,6 +14,7 @@
 
 
 #include <stdbool.h>
+#include <pthread.h>
 
 
 
@@ -239,6 +240,24 @@ typedef struct
 {
     //
     //
+    bool enabled;
+    //
+    //
+    pthread_t event_thread;
+    //
+    //
+    unsigned long max_x;
+    //
+    //
+    unsigned long max_y;
+} gui_touch_s;
+
+
+//
+typedef struct
+{
+    //
+    //
     timestamp_ms utc_clock_time;
     //
     //
@@ -255,6 +274,9 @@ typedef struct
     //
     //
     gui_disabler_s disabler;
+    //
+    //
+    gui_touch_s touch;
     //
     //
     unsigned int background_color_rgb[3];

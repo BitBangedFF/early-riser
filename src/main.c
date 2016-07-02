@@ -100,7 +100,7 @@ int main( int argc, char **argv )
         dm_init(
                 0,
                 0,
-                640,
+                800,
                 480,
                 &gui->display );
 
@@ -123,6 +123,12 @@ int main( int argc, char **argv )
                 gui->display.win_width,
                 gui->display.win_height,
                 &gui->disabler );
+
+        // initialize the touch handler
+        touch_init(
+                gui->display.win_width,
+                gui->display.win_height,
+                &gui->touch );
 
 #warning "TESTING example alarms"
         alarm_add(

@@ -19,6 +19,11 @@
 
 
 //
+void touch_init(
+        const unsigned long max_x,
+        const unsigned long max_y,
+        gui_touch_s * const touch );
+
 
 
 
