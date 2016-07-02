@@ -126,6 +126,10 @@ int main( int argc, char **argv )
 
         // initialize the touch handler
         touch_init(
+                700,
+                32000,
+                1300,
+                32000,
                 gui->display.win_width,
                 gui->display.win_height,
                 &gui->touch );
@@ -142,7 +146,7 @@ int main( int argc, char **argv )
                 "test alarm 2",
                 DAY_SATURDAY,
                 time_get_hour(),
-                time_get_minute() + 1,
+                time_get_minute() + 0,
                 &gui->alarms );
 
         alarm_add(
@@ -167,6 +171,39 @@ int main( int argc, char **argv )
             if( alarms_enabled == TRUE )
             {
                 disabler_start( &gui->disabler );
+            }
+        }
+
+        // check for a disable touch events
+        if( gui->disabler.enabled == TRUE )
+        {
+            float touch_x = 0.0f;
+            float touch_y = 0.0f;
+
+            const bool touch_pressed = touch_get_position(
+                    &gui->touch,
+                    &touch_x,
+                    &touch_y );
+
+            if( touch_pressed == TRUE )
+            {
+                // check if event is within the disabler object
+                const bool is_contained = disabler_is_contained(
+                        &gui->disabler,
+                        touch_x,
+                        touch_y );
+
+                if( is_contained == TRUE )
+                {
+                    const bool should_disable = disabler_stop( &gui->disabler );
+
+                    if( should_disable == TRUE )
+                    {
+                        alarm_disable_all( &gui->alarms );
+                    }
+                }
+
+                touch_set_pressed_state( FALSE, &gui->touch );
             }
         }
 

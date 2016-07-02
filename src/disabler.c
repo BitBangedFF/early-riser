@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 
 #include <VG/openvg.h>
 #include <VG/vgu.h>
@@ -51,19 +52,20 @@
 // *****************************************************
 
 //
-static float get_window_x( const gui_display_s * const display, const float x )
+static float get_window_x( const unsigned long win_width, const float x )
 {
-    const float dw = (float) display->win_width / 2.0f;
+    const float dw = (float) win_width / 2.0f;
 
     const float winx = dw + x;
 
     return winx;
 }
 
+
 //
-static float get_window_y( const gui_display_s * const display, const float y )
+static float get_window_y( const unsigned long win_height, const float y )
 {
-    const float dh = (float) display->win_height / 2.0f;
+    const float dh = (float) win_height / 2.0f;
 
     const float winy = dh + y;
 
@@ -108,6 +110,46 @@ static void update_position( gui_disabler_s * const disabler )
     }
 
     disabler->last_update = now;
+}
+
+
+//
+static bool contained_in_circle(
+        const float x,
+        const float y,
+        const float cx,
+        const float cy,
+        const float r )
+{
+    const float dx = ABS( (x - cx) );
+
+    if( dx > r )
+    {
+        return FALSE;
+    }
+
+    const float dy = ABS( (y - cy) );
+
+    if( dy > r )
+    {
+        return FALSE;
+    }
+
+    if( (dx + dy) <= r )
+    {
+        return TRUE;
+    }
+
+    const float dxsq = SQ(dx);
+    const float dysq = SQ(dy);
+    const float rsq = SQ(r);
+
+    if( (dxsq + dysq) <= rsq )
+    {
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 
@@ -235,6 +277,31 @@ bool disabler_stop( gui_disabler_s * const disabler )
 
 
 //
+bool disabler_is_contained(
+        const gui_disabler_s * const disabler,
+        const float x,
+        const float y )
+{
+    bool is_contained = FALSE;
+
+    if( disabler->enabled == TRUE )
+    {
+        const float px = get_window_x( disabler->win_width, disabler->position[0] );
+        const float py = get_window_y( disabler->win_height, disabler->position[1] );
+
+        is_contained = contained_in_circle(
+                x,
+                y,
+                px,
+                py,
+                (disabler->radius * 0.9f) );
+    }
+
+    return is_contained;
+}
+
+
+//
 void disabler_render(
         const gui_s * const gui,
         gui_disabler_s * const disabler )
@@ -265,8 +332,8 @@ void disabler_render(
 
         // render circle
         Circle(
-                get_window_x( &gui->display, disabler->position[0] ),
-                get_window_y( &gui->display, disabler->position[1] ),
+                get_window_x( disabler->win_width, disabler->position[0] ),
+                get_window_y( disabler->win_height, disabler->position[1] ),
                 disabler->radius );
 
         // text color
@@ -278,8 +345,8 @@ void disabler_render(
 
         // render text
         TextMid(
-            get_window_x( &gui->display, disabler->position[0] ),
-            get_window_y( &gui->display, disabler->position[1] ) - (disabler->font_height / 3.0f),
+            get_window_x( disabler->win_width, disabler->position[0] ),
+            get_window_y( disabler->win_height, disabler->position[1] ) - (disabler->font_height / 3.0f),
             disabler->display_string,
             *font,
             (int) disabler->font_point_size );

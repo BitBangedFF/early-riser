@@ -29,6 +29,51 @@
 #endif
 
 
+/**
+ * @brief Minimum of a and b.
+ *
+ */
+#ifndef MIN
+#define MIN(a,b) ((a)<(b)?(a):(b))
+#endif
+
+
+/**
+ * @brief Maximum of a and b.
+ *
+ */
+#ifndef MAX
+#define MAX(a,b) ((a)>(b)?(a):(b))
+#endif
+
+
+/**
+ * @brief Absolute value of x.
+ *
+ */
+#ifndef ABS
+#define ABS(x) ((x)>0?(x):-(x))
+#endif
+
+
+/**
+ * @brief Square of x.
+ *
+ */
+#ifndef SQ
+#define SQ(x) ((x)*(x))
+#endif
+
+
+/**
+ * @brief Constrain amount to the range low:high.
+ *
+ */
+#ifndef CONSTRAIN
+#define CONSTRAIN(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#endif
+
+
 
 
 //
@@ -246,10 +291,22 @@ typedef struct
     pthread_t event_thread;
     //
     //
+    unsigned long min_x;
+    //
+    //
     unsigned long max_x;
     //
     //
+    unsigned long min_y;
+    //
+    //
     unsigned long max_y;
+    //
+    //
+    unsigned long width;
+    //
+    //
+    unsigned long height;
 } gui_touch_s;
 
 

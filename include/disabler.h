@@ -23,7 +23,7 @@
 
 
 // number of counts/button-presses before disabling the alarms
-#define DISABLER_DEFAULT_STOP_COUNT (5)
+#define DISABLER_DEFAULT_STOP_COUNT (10)
 
 
 // ms
@@ -45,6 +45,13 @@ void disabler_start( gui_disabler_s * const disabler );
 
 //
 bool disabler_stop( gui_disabler_s * const disabler );
+
+
+//
+bool disabler_is_contained(
+        const gui_disabler_s * const disabler,
+        const float x,
+        const float y );
 
 
 //
