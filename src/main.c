@@ -140,7 +140,7 @@ int main( int argc, char **argv )
 
         alarm_add(
                 "test alarm 2",
-                DAY_MONDAY_THROUGH_FRIDAY,
+                DAY_SATURDAY,
                 time_get_hour(),
                 time_get_minute() + 1,
                 &gui->alarms );

@@ -251,7 +251,7 @@ void alarm_set_default_configuration( gui_alarm_config_s * const config )
     if( config != NULL )
     {
         config->font = TEXT_FONT_SARIF_TYPE_FACE;
-        config->font_point_size = 20;
+        config->font_point_size = 22;
         config->digit_color[0] = 100.0f;
         config->digit_color[1] = 100.0f;
         config->digit_color[2] = 100.0f;

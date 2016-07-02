@@ -65,7 +65,7 @@ void calendar_set_default_configuration( gui_calendar_s * const calendar )
     if( calendar != NULL )
     {
         calendar->font = TEXT_FONT_SARIF_TYPE_FACE;
-        calendar->font_point_size = 30;
+        calendar->font_point_size = 35;
         calendar->digit_color[0] = 28.0f;
         calendar->digit_color[1] = 0.0f;
         calendar->digit_color[2] = 223.0f;

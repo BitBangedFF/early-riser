@@ -65,7 +65,7 @@ void clock_set_default_configuration( gui_clock_s * const clock )
     if( clock != NULL )
     {
         clock->font = TEXT_FONT_SARIF_TYPE_FACE;
-        clock->font_point_size = 165;
+        clock->font_point_size = 200;
         clock->digit_color[0] = 28.0f;
         clock->digit_color[1] = 0.0f;
         clock->digit_color[2] = 223.0f;
