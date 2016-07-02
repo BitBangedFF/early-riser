@@ -137,8 +137,8 @@ void disabler_set_default_configuration(
         disabler->digit_color[2] = 0.0f;
         disabler->digit_color[3] = 1.0f;
 
-        disabler->color[0] = 255.0f;
-        disabler->color[1] = 0.0f;
+        disabler->color[0] = 0.0f;
+        disabler->color[1] = 255.0f;
         disabler->color[2] = 0.0f;
         disabler->color[3] = 1.0f;
 

@@ -14,6 +14,7 @@ SRCS := src/display_manager.c \
 	src/clock.c \
 	src/alarm.c \
 	src/disabler.c \
+	src/touch.c \
 	src/main.c
 
 # object files, dep files

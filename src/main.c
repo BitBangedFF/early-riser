@@ -20,6 +20,7 @@
 #include "calendar.h"
 #include "alarm.h"
 #include "disabler.h"
+#include "touch.h"
 #include "display_manager.h"
 
 
@@ -128,7 +129,7 @@ int main( int argc, char **argv )
                 "test alarm 1",
                 DAY_MONDAY_THROUGH_FRIDAY,
                 13,
-                25,
+                30,
                 &gui->alarms );
 
         alarm_add(

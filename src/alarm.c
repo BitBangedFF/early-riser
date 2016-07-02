@@ -136,8 +136,8 @@ static void update_alarm(
 
             if( delta >= ALARM_DEFAULT_REENABLE_DELAY )
             {
-                // only enable when the minute is match so we don't re-enabled after it passes
-                if( (hour >= alarm->hour) && (minute == alarm->minute) )
+                // only enable when the hour/minute is match so we don't re-enabled after it passes
+                if( (hour == alarm->hour) && (minute == alarm->minute) )
                 {
                     alarm->enabled = TRUE;
                     alarm->enabled_timestamp = time_get_timestamp();
