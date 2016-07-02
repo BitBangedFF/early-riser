@@ -146,7 +146,7 @@ int main( int argc, char **argv )
                 "test alarm 2",
                 DAY_SATURDAY,
                 time_get_hour(),
-                time_get_minute() + 0,
+                time_get_minute() + 1,
                 &gui->alarms );
 
         alarm_add(
