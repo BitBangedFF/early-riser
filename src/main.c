@@ -159,13 +159,6 @@ int main( int argc, char **argv )
                 6,
                 30,
                 &gui->alarms );
-
-        alarm_add(
-                "test alarm 3",
-                time_get_week_day(),
-                time_get_hour(),
-                time_get_minute() + 0,
-                &gui->alarms );
     }
 
     // main loop
