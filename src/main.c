@@ -21,6 +21,7 @@
 #include "alarm.h"
 #include "disabler.h"
 #include "touch.h"
+#include "audio.h"
 #include "display_manager.h"
 
 
@@ -134,6 +135,16 @@ int main( int argc, char **argv )
                 gui->display.win_height,
                 &gui->touch );
 
+        // initialize default audio file
+        if( (argc != 2) || (argv[1] == NULL) || (strlen(argv[1]) <= 0) )
+        {
+            audio_init( "/usr/local/share/audiofiles/nature_1.mp3", &gui->audio );
+        }
+        else
+        {
+            audio_init( argv[1], &gui->audio );
+        }
+
 #warning "TESTING example alarms"
         alarm_add(
                 "test alarm 1",
@@ -144,7 +155,7 @@ int main( int argc, char **argv )
 
         alarm_add(
                 "test alarm 2",
-                DAY_SATURDAY,
+                DAY_SUNDAY,
                 time_get_hour(),
                 time_get_minute() + 1,
                 &gui->alarms );
@@ -171,6 +182,7 @@ int main( int argc, char **argv )
             if( alarms_enabled == TRUE )
             {
                 disabler_start( &gui->disabler );
+                audio_enable( &gui->audio );
             }
         }
 
@@ -200,6 +212,7 @@ int main( int argc, char **argv )
                     if( should_disable == TRUE )
                     {
                         alarm_disable_all( &gui->alarms );
+                        audio_disable( &gui->audio );
                     }
                 }
 
@@ -219,9 +232,11 @@ int main( int argc, char **argv )
 
     if( gui != NULL )
     {
-        dm_release( &gui->display );
+        audio_release( &gui->audio );
 
         alarm_release( &gui->alarms );
+
+        dm_release( &gui->display );
 
         free( gui );
         gui = NULL;

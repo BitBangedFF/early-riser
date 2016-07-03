@@ -315,6 +315,21 @@ typedef struct
 {
     //
     //
+    bool enabled;
+    //
+    //
+    pthread_t thread;
+    //
+    //
+    char file_path[1024];
+} gui_audio_s;
+
+
+//
+typedef struct
+{
+    //
+    //
     timestamp_ms utc_clock_time;
     //
     //
@@ -334,6 +349,9 @@ typedef struct
     //
     //
     gui_touch_s touch;
+    //
+    //
+    gui_audio_s audio;
     //
     //
     unsigned int background_color_rgb[3];
