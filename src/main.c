@@ -147,24 +147,24 @@ int main( int argc, char **argv )
 
 #warning "TESTING example alarms"
         alarm_add(
-                "test alarm 1",
+                "morning wake up",
                 DAY_MONDAY_THROUGH_FRIDAY,
-                13,
-                30,
+                6,
+                00,
                 &gui->alarms );
 
         alarm_add(
-                "test alarm 2",
-                DAY_SUNDAY,
-                time_get_hour(),
-                time_get_minute() + 1,
+                "final call",
+                DAY_MONDAY_THROUGH_FRIDAY,
+                6,
+                30,
                 &gui->alarms );
 
         alarm_add(
                 "test alarm 3",
                 time_get_week_day(),
                 time_get_hour(),
-                time_get_minute() + 2,
+                time_get_minute() + 0,
                 &gui->alarms );
     }
 
