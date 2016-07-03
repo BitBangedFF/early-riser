@@ -134,9 +134,16 @@ int main( int argc, char **argv )
                 gui->display.win_width,
                 gui->display.win_height,
                 &gui->touch );
-#warning "TESTING example mp3 file"
+
         // initialize default audio file
-        audio_init( "/home/pi/Music/bad_company.mp3", &gui->audio );
+        if( (argc != 2) || (argv[1] == NULL) || (strlen(argv[1]) <= 0) )
+        {
+            audio_init( "/usr/local/share/audiofiles/nature_1.mp3", &gui->audio );
+        }
+        else
+        {
+            audio_init( argv[1], &gui->audio );
+        }
 
 #warning "TESTING example alarms"
         alarm_add(
@@ -175,6 +182,7 @@ int main( int argc, char **argv )
             if( alarms_enabled == TRUE )
             {
                 disabler_start( &gui->disabler );
+                audio_enable( &gui->audio );
             }
         }
 
@@ -204,6 +212,7 @@ int main( int argc, char **argv )
                     if( should_disable == TRUE )
                     {
                         alarm_disable_all( &gui->alarms );
+                        audio_disable( &gui->audio );
                     }
                 }
 

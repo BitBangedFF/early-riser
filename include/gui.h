@@ -318,7 +318,7 @@ typedef struct
     bool enabled;
     //
     //
-    pthread_t event_thread;
+    pthread_t thread;
     //
     //
     char file_path[1024];
