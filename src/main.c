@@ -21,6 +21,7 @@
 #include "alarm.h"
 #include "disabler.h"
 #include "touch.h"
+#include "audio.h"
 #include "display_manager.h"
 
 
@@ -133,6 +134,9 @@ int main( int argc, char **argv )
                 gui->display.win_width,
                 gui->display.win_height,
                 &gui->touch );
+#warning "TESTING example mp3 file"
+        // initialize default audio file
+        audio_init( "/home/pi/Music/bad_company.mp3", &gui->audio );
 
 #warning "TESTING example alarms"
         alarm_add(
@@ -144,7 +148,7 @@ int main( int argc, char **argv )
 
         alarm_add(
                 "test alarm 2",
-                DAY_SATURDAY,
+                DAY_SUNDAY,
                 time_get_hour(),
                 time_get_minute() + 1,
                 &gui->alarms );
@@ -219,9 +223,11 @@ int main( int argc, char **argv )
 
     if( gui != NULL )
     {
-        dm_release( &gui->display );
+        audio_release( &gui->audio );
 
         alarm_release( &gui->alarms );
+
+        dm_release( &gui->display );
 
         free( gui );
         gui = NULL;

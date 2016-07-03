@@ -15,6 +15,7 @@ SRCS := src/display_manager.c \
 	src/alarm.c \
 	src/disabler.c \
 	src/touch.c \
+	src/audio.c \
 	src/main.c
 
 # object files, dep files
@@ -38,7 +39,7 @@ CCFLAGS += -Wextra \
 LDFLAGS =
 
 #
-LIBS = -L/opt/vc/lib -lEGL -lGLESv2 -lbcm_host -lpthread -ljpeg -lshapes -lpthread -lrt -lm
+LIBS = -L/opt/vc/lib -lEGL -lGLESv2 -lbcm_host -lpthread -ljpeg -lshapes -lpthread -lmpg123 -lao -lrt -lm
 
 #
 INCLUDE = -Iinclude \
