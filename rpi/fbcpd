@@ -1,0 +1,33 @@
+#!/bin/bash
+# /etc/init.d/fbcpd
+
+### BEGIN INIT INFO
+# Provides:          fbcp
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Example initscript
+# Description:       This service is used to manage early-riser
+### END INIT INFO
+
+APP=fbcp
+
+PATH="/usr/local/bin/$APP"
+
+case "$1" in
+    start)
+        echo "starting fbcp"
+        $PATH &
+        ;;
+    stop)
+        echo "stopping fbcp"
+        /usr/bin/killall -SIGINT $APP
+        ;;
+    *)
+        echo "Usage: /etc/init.d/fbcpd start|stop"
+        exit 1
+        ;;
+esac
+
+exit 0

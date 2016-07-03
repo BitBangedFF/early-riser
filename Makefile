@@ -6,6 +6,9 @@
 # target
 TARGET := bin/early-riser
 
+# installation path
+INSTALL_PATH := /usr/local/bin/early-riser
+
 # sources
 SRCS := src/display_manager.c \
 	src/time_domain.c \
@@ -73,9 +76,13 @@ $(OBJS): %.o: %.c %.dep
 $(DEPS): %.dep: %.c Makefile
 	$(CC) $(CCFLAGS) $(INCLUDE) -MM $< > $@
 
-# install to system
-#install: all
-#	cp $(TARGET) $(PSYNC_HOME)/bin/
+#
+install: all
+	cp $(TARGET) $(INSTALL_PATH)
+
+#
+uninstall:
+	rm -f $(INSTALL_PATH)
 
 #
 clean:
