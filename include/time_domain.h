@@ -41,6 +41,26 @@
 
 
 //
+#define TIME_1MIN (60000)
+
+
+//
+#define TIME_2MIN (120000)
+
+
+//
+#define TIME_3MIN (180000)
+
+
+//
+#define TIME_4MIN (240000)
+
+
+//
+#define TIME_5MIN (300000)
+
+
+//
 #define DAY_SUNDAY (0)
 #define DAY_MONDAY (1)
 #define DAY_TUESDAY (2)

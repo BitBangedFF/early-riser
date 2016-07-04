@@ -145,7 +145,7 @@ int main( int argc, char **argv )
             audio_init( argv[1], &gui->audio );
         }
 
-#warning "TESTING example alarms"
+        // example alarm
         alarm_add(
                 "morning wake up",
                 DAY_MONDAY_THROUGH_FRIDAY,
@@ -153,12 +153,23 @@ int main( int argc, char **argv )
                 00,
                 &gui->alarms );
 
+        // example alarm
         alarm_add(
                 "final call",
                 DAY_MONDAY_THROUGH_FRIDAY,
                 6,
                 30,
                 &gui->alarms );
+
+        // test alarm
+#ifdef DEBUG_ALARM
+        alarm_add(
+                "test alarm",
+                time_get_week_day(),
+                time_get_hour(),
+                time_get_minute(),
+                &gui->alarms );
+#endif
     }
 
     // main loop

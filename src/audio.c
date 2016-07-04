@@ -36,6 +36,14 @@
 #define STATE_CHANGE_WAIT_DELAY (5)
 
 
+//
+#define VOLUME_MAX (100)
+
+
+//
+#define VOLUME_MIN (1)
+
+
 
 
 // *****************************************************
@@ -81,6 +89,24 @@ static bool is_file_readable( const char * const path )
 
 
 //
+static void set_volume( unsigned long volume )
+{
+    // hacky solution...
+    char command[256];
+
+    // format command
+    snprintf(
+            command,
+            sizeof(command),
+            "/usr/bin/amixer sset PCM,0 %lu%%",
+            CONSTRAIN(volume, VOLUME_MIN, VOLUME_MAX) );
+
+    // execute
+    (void) system( command );
+}
+
+
+//
 static void *audio_thread_function( void * const user_data )
 {
     ao_device *device = NULL;
@@ -93,6 +119,7 @@ static void *audio_thread_function( void * const user_data )
     long rate = 0;
     int ao_driver = 0;
     int decoder_err = 0;
+    unsigned long volume = 0;
     ao_sample_format format;
     char  file_path[1024];
     const gui_audio_s * const audio = (gui_audio_s*) user_data;
@@ -103,6 +130,9 @@ static void *audio_thread_function( void * const user_data )
 
     strncpy( file_path, audio->file_path, sizeof(file_path) );
 
+    // monotonic
+    const timestamp_ms start_time = time_get_monotonic_timestamp();
+
     if( audio != NULL )
     {
         decoder = mpg123_new( NULL, &decoder_err );
@@ -112,6 +142,9 @@ static void *audio_thread_function( void * const user_data )
         }
         else
         {
+            volume = AUDIO_DEFAULT_VOLUME;
+            set_volume( volume );
+
             buffer_size = mpg123_outblock( decoder );
             buffer = malloc( buffer_size * sizeof(*buffer) );
 
@@ -151,6 +184,45 @@ static void *audio_thread_function( void * const user_data )
                             device,
                             (char*) buffer,
                             bytes_read );
+                }
+            }
+
+            // increase volume over time
+            if( volume < VOLUME_MAX )
+            {
+                // monotonic
+                const timestamp_ms now_time = time_get_monotonic_timestamp();
+                const timestamp_ms delta = (now_time - start_time);
+
+                if( (delta > TIME_5MIN) && (volume < VOLUME_MAX) )
+                {
+                    // 100 %
+                    volume = VOLUME_MAX;
+                    set_volume( volume );
+                }
+                else if( (delta > TIME_4MIN) && (volume < 90) )
+                {
+                    // 90 %
+                    volume = 90;
+                    set_volume( volume );
+                }
+                else if( (delta > TIME_3MIN) && (volume < 80) )
+                {
+                    // 80 %
+                    volume = 80;
+                    set_volume( volume );
+                }
+                else if( (delta > TIME_2MIN) && (volume < 70) )
+                {
+                    // 70 %
+                    volume = 70;
+                    set_volume( volume );
+                }
+                else if( (delta > TIME_1MIN) && (volume < 60) )
+                {
+                    // 60 %
+                    volume = 60;
+                    set_volume( volume );
                 }
             }
 
@@ -204,6 +276,8 @@ void audio_init(
 {
     ao_initialize();
     mpg123_init();
+
+    set_volume( AUDIO_DEFAULT_VOLUME );
 
     if( audio != NULL )
     {

@@ -19,6 +19,12 @@
 
 
 //
+#define AUDIO_DEFAULT_VOLUME (50)
+
+
+
+
+//
 void audio_init(
         const char * const file_path,
         gui_audio_s * const audio );

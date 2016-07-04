@@ -18,8 +18,7 @@ PATH="/usr/local/bin/$APP"
 case "$1" in
     start)
         echo "starting alarm clock"
-        /usr/bin/amixer sset PCM,0 100%
-        $PATH &
+        $PATH >/dev/null 2>&1 &
         ;;
     stop)
         echo "stopping alarm clock"
